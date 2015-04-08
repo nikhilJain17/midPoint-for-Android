@@ -1,39 +1,1 @@
-package com.example.nikhil.myapplication;
-
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-
-
-public class AddLocations extends ActionBarActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_locations);
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_locations, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-}
+package com.example.nikhil.myapplication;import android.support.v7.app.ActionBarActivity;import android.os.Bundle;import android.view.Menu;import android.view.MenuItem;import android.view.View;import android.widget.ArrayAdapter;import android.widget.EditText;import android.widget.Button;import android.widget.ListAdapter;import android.widget.ListView;import android.widget.Toast;import java.util.ArrayList;public class AddLocations extends ActionBarActivity {    // References to GUI objects declared in XML    EditText addLocationET;    EditText typeET;    Button addToListViewButton;    Button submitButton;    ListView locationsListView;    // Some global (type) variables that may be needed in many functions    String userLocationInput;   // what the user enters in addLocationET    ArrayList userLocationInputArray = new ArrayList(); // array to hold all inputs    @Override    protected void onCreate(Bundle savedInstanceState) {        super.onCreate(savedInstanceState);        setContentView(R.layout.activity_add_locations);        // Initialize the references to GUI objects        addLocationET = (EditText) findViewById(R.id.addressEditText);        typeET = (EditText) findViewById(R.id.typeEditText);        addToListViewButton = (Button) findViewById(R.id.addButton);        submitButton = (Button) findViewById(R.id.submitButton);        locationsListView = (ListView) findViewById(R.id.listView);        userLocationInput = ""; // make sure its not null    }    // Button listener for the "addToListViewButton"    // This function does the following:    // 1. Get the user's input    // 2. Put it into the ListView    // 3. Geocode the user's input into a LatLng    // 4. Store said LatLng into a SharedPreferences - this same SharedPrefs will be used to plot the pins on the map later.    public void onAddButtonClick(View view) {        // 1. Get the user's input        userLocationInput = addLocationET.getText().toString();        // Add to the ArrayList        userLocationInputArray.add(userLocationInput);        // Create an ArrayAdapter to convert array into ListView & attach it to the ListView        ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, userLocationInputArray);        locationsListView.setAdapter(adapter);            }    @Override    public boolean onCreateOptionsMenu(Menu menu) {        // Inflate the menu; this adds items to the action bar if it is present.        getMenuInflater().inflate(R.menu.menu_add_locations, menu);        return true;    }    @Override    public boolean onOptionsItemSelected(MenuItem item) {        // Handle action bar item clicks here. The action bar will        // automatically handle clicks on the Home/Up button, so long        // as you specify a parent activity in AndroidManifest.xml.        int id = item.getItemId();        //noinspection SimplifiableIfStatement        if (id == R.id.action_settings) {            return true;        }        return super.onOptionsItemSelected(item);    }}
