@@ -3,6 +3,7 @@ package com.example.nikhil.myapplication;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -29,7 +30,14 @@ public class MapsActivity extends FragmentActivity {
 
         sharedPreferences = getSharedPreferences("map", MODE_PRIVATE);
 
+
         // testing to see if sharedPrefs is working
+
+        String di = sharedPreferences.getString("test", "no");
+
+//        Toast.makeText(this, di, Toast.LENGTH_SHORT).show();
+
+
         lat = (double) sharedPreferences.getLong("lat0", 0);
         longdirk = (double) sharedPreferences.getLong("long0", 0);
 
