@@ -10,6 +10,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Set;
+
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
@@ -37,13 +39,37 @@ public class MapsActivity extends FragmentActivity {
 
 //        Toast.makeText(this, di, Toast.LENGTH_SHORT).show();
 
+//
+//        lat = (double) sharedPreferences.getLong("lat0", 0);
+//        longdirk = (double) sharedPreferences.getLong("long0", 0);
+//
+//        LatLng test = new LatLng(lat, longdirk);
+//
+//        mMap.addMarker(new MarkerOptions().position(test));
 
-        lat = (double) sharedPreferences.getLong("lat0", 0);
-        longdirk = (double) sharedPreferences.getLong("long0", 0);
+        Set<String> setUp = sharedPreferences.getStringSet("mapKey", null);
 
-        LatLng test = new LatLng(lat, longdirk);
+        if (setUp != null) {
 
-        mMap.addMarker(new MarkerOptions().position(test));
+            Object[] array = new String[4];
+            array = setUp.toArray();
+
+            String firstLat = "69";
+            String firstLong = "69";
+
+            firstLat = (String) array[0];
+            firstLong = (String) array[1];
+
+            Toast.makeText(this, firstLat + " " + firstLong, Toast.LENGTH_LONG).show();
+
+            double firstLate = Double.parseDouble(firstLat);
+            double firstLonge = Double.parseDouble(firstLong);
+
+            LatLng dirk = new LatLng(firstLate, firstLonge);
+
+            mMap.addMarker(new MarkerOptions().position(dirk));
+
+        }
 
 
     }
@@ -52,6 +78,49 @@ public class MapsActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+
+
+        sharedPreferences = getSharedPreferences("map", MODE_PRIVATE);
+
+
+        // testing to see if sharedPrefs is working
+
+        String di = sharedPreferences.getString("test", "no");
+
+//        Toast.makeText(this, di, Toast.LENGTH_SHORT).show();
+
+//
+//        lat = (double) sharedPreferences.getLong("lat0", 0);
+//        longdirk = (double) sharedPreferences.getLong("long0", 0);
+//
+//        LatLng test = new LatLng(lat, longdirk);
+//
+//        mMap.addMarker(new MarkerOptions().position(test));
+
+        Set<String> setUp = sharedPreferences.getStringSet("mapKey", null);
+
+        if (setUp != null) {
+
+            Object[] array = new String[4];
+            array = setUp.toArray();
+
+            String firstLat = "69";
+            String firstLong = "69";
+
+            firstLat = (String) array[0];
+            firstLong = (String) array[1];
+
+//            Toast.makeText(this, firstLat + " " + firstLong, Toast.LENGTH_LONG).show();
+
+            double firstLate = Double.parseDouble(firstLat);
+            double firstLonge = Double.parseDouble(firstLong);
+
+            LatLng dirk = new LatLng(firstLate, firstLonge);
+
+            mMap.addMarker(new MarkerOptions().position(dirk));
+
+        }
+
 
     }
 
