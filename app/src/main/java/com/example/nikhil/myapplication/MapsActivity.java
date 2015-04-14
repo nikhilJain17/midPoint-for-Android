@@ -26,51 +26,7 @@ public class MapsActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
         setUpMapIfNeeded();
-
-
-
-        sharedPreferences = getSharedPreferences("map", MODE_PRIVATE);
-
-
-        // testing to see if sharedPrefs is working
-
-        String di = sharedPreferences.getString("test", "no");
-
-//        Toast.makeText(this, di, Toast.LENGTH_SHORT).show();
-
-//
-//        lat = (double) sharedPreferences.getLong("lat0", 0);
-//        longdirk = (double) sharedPreferences.getLong("long0", 0);
-//
-//        LatLng test = new LatLng(lat, longdirk);
-//
-//        mMap.addMarker(new MarkerOptions().position(test));
-
-        Set<String> setUp = sharedPreferences.getStringSet("mapKey", null);
-
-        if (setUp != null) {
-
-            Object[] array = new String[4];
-            array = setUp.toArray();
-
-            String firstLat = "69";
-            String firstLong = "69";
-
-            firstLat = (String) array[0];
-            firstLong = (String) array[1];
-
-            Toast.makeText(this, firstLat + " " + firstLong, Toast.LENGTH_LONG).show();
-
-            double firstLate = Double.parseDouble(firstLat);
-            double firstLonge = Double.parseDouble(firstLong);
-
-            LatLng dirk = new LatLng(firstLate, firstLonge);
-
-            mMap.addMarker(new MarkerOptions().position(dirk));
-
-        }
 
 
     }
@@ -80,62 +36,19 @@ public class MapsActivity extends FragmentActivity {
         super.onResume();
         setUpMapIfNeeded();
 
+        /// Get the bundle
 
+        Bundle bundle = getIntent().getBundleExtra("bundle");
+        double[] doble = bundle.getDoubleArray("positions");
 
-        sharedPreferences = getSharedPreferences("map", MODE_PRIVATE);
-
-
-        // testing to see if sharedPrefs is working
-
-        String di = sharedPreferences.getString("test", "no");
-
-//        Toast.makeText(this, di, Toast.LENGTH_SHORT).show();
-
-//
-//        lat = (double) sharedPreferences.getLong("lat0", 0);
-//        longdirk = (double) sharedPreferences.getLong("long0", 0);
-//
-//        LatLng test = new LatLng(lat, longdirk);
-//
-//        mMap.addMarker(new MarkerOptions().position(test));
-
-        Set<String> setUp = sharedPreferences.getStringSet("mapKey", null);
-
-        if (setUp != null) {
-
-            Object[] array = new String[4];
-            array = setUp.toArray();
-
-            String firstLat = "69";
-            String firstLong = "69";
-
-            firstLat = (String) array[0];
-            firstLong = (String) array[1];
-
-//            Toast.makeText(this, firstLat + " " + firstLong, Toast.LENGTH_LONG).show();
-
-            double firstLate = Double.parseDouble(firstLat);
-            double firstLonge = Double.parseDouble(firstLong);
-
-            LatLng dirk = new LatLng(firstLate, firstLonge);
-
-            mMap.addMarker(new MarkerOptions().position(dirk));
-
-            //////////////////////////////////////////////////////
-
-            /// Get the bundle
-
-            Bundle bundle = getIntent().getBundleExtra("bundle");
-            double[] doble = bundle.getDoubleArray("positions");
-
-            for (int i = 0; i < doble.length; i++) {
-                Log.d("Doubles passed:", Double.toString(doble[i]));
-            }
-
+        for (int i = 0; i < doble.length; i++) {
+            Log.d("Doubles passed:", Double.toString(doble[i]));
         }
 
-
     }
+
+
+
 
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
