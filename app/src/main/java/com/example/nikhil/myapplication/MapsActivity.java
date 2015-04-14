@@ -41,8 +41,25 @@ public class MapsActivity extends FragmentActivity {
         Bundle bundle = getIntent().getBundleExtra("bundle");
         double[] doble = bundle.getDoubleArray("positions");
 
+        // Plot the bundles
+
+        LatLng plotter;
+
         for (int i = 0; i < doble.length; i++) {
             Log.d("Doubles passed:", Double.toString(doble[i]));
+
+            // all even indexes are latitude
+            // all odd indexes are longitude
+            // I want to get lat-long pairs
+            if (i % 2 == 1) {
+
+                plotter = new LatLng(doble[i-1], doble[i]);
+
+                mMap.addMarker(new MarkerOptions().position(plotter));
+
+            }
+
+
         }
 
     }
