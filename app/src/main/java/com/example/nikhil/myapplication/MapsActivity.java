@@ -3,6 +3,7 @@ package com.example.nikhil.myapplication;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -80,6 +81,7 @@ public class MapsActivity extends FragmentActivity {
         setUpMapIfNeeded();
 
 
+
         sharedPreferences = getSharedPreferences("map", MODE_PRIVATE);
 
 
@@ -118,6 +120,17 @@ public class MapsActivity extends FragmentActivity {
             LatLng dirk = new LatLng(firstLate, firstLonge);
 
             mMap.addMarker(new MarkerOptions().position(dirk));
+
+            //////////////////////////////////////////////////////
+
+            /// Get the bundle
+
+            Bundle bundle = getIntent().getBundleExtra("bundle");
+            double[] doble = bundle.getDoubleArray("positions");
+
+            for (int i = 0; i < doble.length; i++) {
+                Log.d("Doubles passed:", Double.toString(doble[i]));
+            }
 
         }
 
