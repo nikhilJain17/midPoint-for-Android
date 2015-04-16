@@ -1,6 +1,7 @@
 package com.example.nikhil.myapplication;
 
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,16 +12,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.BufferedReader;
+import java.net.HttpURLConnection;
 import java.util.Set;
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
-    SharedPreferences sharedPreferences;
-
-    double lat;
-    double longdirk;
+    double midPointLat;
+    double midPointLong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,8 @@ public class MapsActivity extends FragmentActivity {
 
         // to plot the midPoint, these variables will hold the averages
         // initialize them with the first lat and lng
-        double midPointLat = doble[0];
-        double midPointLong = doble[1];
+        midPointLat = doble[0];
+        midPointLong = doble[1];
 
         Log.d("Initial midPointLat value: ", Double.toString(midPointLat));
         Log.d("Initial midPointLong value: ", Double.toString(midPointLong));
@@ -107,6 +108,65 @@ public class MapsActivity extends FragmentActivity {
         Log.d("midPoint Long; ", Double.toString(midPointLong));
 
     }
+
+
+    public class PlacesApiTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            // Connect to the API and consume it (viciously)
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+
+            String unparsedJSON = null;
+
+            // uncomment
+
+//
+//            try {
+//
+//                // Construct the URL for the Google Places Search API
+//                String baseURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
+//                String location = Double.toString(midPointLat) + "," + Double.toString(midPointLong);
+//
+//
+//            }
+
+           return null;
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
