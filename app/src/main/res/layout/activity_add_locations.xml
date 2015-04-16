@@ -34,7 +34,17 @@
         android:id="@+id/submitButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="onSubmitButtonClick"/>
+        android:onClick="onSubmitButtonClick"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/addButton"
+        android:layout_toEndOf="@+id/addButton"
+        android:text="x"
+        android:onClick="onClearButtonClick"/>
 
     <ListView
         android:layout_width="wrap_content"
@@ -49,12 +59,12 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add"
+        android:text="+"
         android:id="@+id/addButton"
-        android:layout_alignBottom="@+id/addressEditText"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="onAddButtonClick"/>
+        android:onClick="onAddButtonClick"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/addressEditText"
+        android:layout_toEndOf="@+id/addressEditText" />
 
 
 </RelativeLayout>

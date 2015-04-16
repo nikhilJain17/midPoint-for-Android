@@ -42,71 +42,69 @@ public class MapsActivity extends FragmentActivity {
         Bundle bundle = getIntent().getBundleExtra("bundle");
         double[] doble = bundle.getDoubleArray("positions");
 
-        // to plot the midPoint, these variables will hold the averages
-        // initialize them with the first lat and lng
-        midPointLat = doble[0];
-        midPointLong = doble[1];
+        // Prevents ArrayOutOfBoundsException, stops crashing if user doesnt enter anything and hits submit
+        if (doble.length > 0) {
 
-        Log.d("Initial midPointLat value: ", Double.toString(midPointLat));
-        Log.d("Initial midPointLong value: ", Double.toString(midPointLong));
+            // to plot the midPoint, these variables will hold the averages
+            // initialize them with the first lat and lng
+            midPointLat = doble[0];
+            midPointLong = doble[1];
 
-        // Plot the bundles
+            // Plot the bundles
 
-        LatLng plotter;
+            LatLng plotter;
 
-        for (int i = 0; i < doble.length; i++) {
-            Log.d("Doubles passed:", Double.toString(doble[i]));
+            for (int i = 0; i < doble.length; i++) {
+                Log.d("Doubles passed:", Double.toString(doble[i]));
 
-            // Since we already initialized them to tbe the first values in the array, u need to subtract them to get rid of duplicates
-            if (i == 0) {
-                midPointLat -= midPointLat;
+                // Since we already initialized them to tbe the first values in the array, u need to subtract them to get rid of duplicates
+                if (i == 0) {
+                    midPointLat -= midPointLat;
+                } else if (i == 1) {
+                    midPointLong -= midPointLong;
+                }
+
+
+                // all even indexes are latitude
+                // all odd indexes are longitude
+                // I want to get lat-long pairs
+
+
+                // Longitudes
+                if (i % 2 == 1) {
+
+                    Log.d("Longitude: ", Double.toString(doble[i]));
+
+                    // plot the position
+                    plotter = new LatLng(doble[i - 1], doble[i]);
+                    mMap.addMarker(new MarkerOptions().position(plotter));
+
+                    midPointLong += doble[i];
+
+                }
+
+
+                // Latitudes
+                else if (i % 2 == 0) {
+
+                    midPointLat += doble[i];
+
+
+                }
+
+
             }
 
-            else if (i == 1) {
-                midPointLong -= midPointLong;
-            }
+            // at last, the tru midpoints
+            midPointLat = midPointLat / (doble.length / 2);
+            midPointLong = midPointLong / (doble.length / 2);
 
+            LatLng midPoint = new LatLng(midPointLat, midPointLong);
+            mMap.addMarker(new MarkerOptions().position(midPoint).draggable(false).title("midPoint"));
 
-            // all even indexes are latitude
-            // all odd indexes are longitude
-            // I want to get lat-long pairs
-
-
-            // Longitudes
-            if (i % 2 == 1) {
-
-                Log.d("Longitude: ", Double.toString(doble[i]));
-
-                // plot the position
-                plotter = new LatLng(doble[i-1], doble[i]);
-                mMap.addMarker(new MarkerOptions().position(plotter));
-
-                midPointLong += doble[i];
-
-            }
-
-
-            // Latitudes
-            else if (i % 2 == 0) {
-
-                midPointLat += doble[i];
-
-
-            }
-
-
+            Log.d("midPoint Lat: ", Double.toString(midPointLat));
+            Log.d("midPoint Long; ", Double.toString(midPointLong));
         }
-
-        // at last, the tru midpoints
-        midPointLat = midPointLat / (doble.length / 2);
-        midPointLong = midPointLong / (doble.length / 2);
-
-        LatLng midPoint = new LatLng(midPointLat, midPointLong);
-        mMap.addMarker(new MarkerOptions().position(midPoint).draggable(false).title("midPoint"));
-
-        Log.d("midPoint Lat: ", Double.toString(midPointLat));
-        Log.d("midPoint Long; ", Double.toString(midPointLong));
-
     }
 
 
