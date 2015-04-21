@@ -1,6 +1,7 @@
 package com.example.nikhil.myapplication;
 
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -13,7 +14,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
 import java.util.Set;
 
 public class MapsActivity extends FragmentActivity {
@@ -42,7 +48,7 @@ public class MapsActivity extends FragmentActivity {
         Bundle bundle = getIntent().getBundleExtra("bundle");
         double[] doble = bundle.getDoubleArray("positions");
 
-        // Prevents ArrayOutOfBoundsException, stops crashing if user doesnt enter anything and hits submit
+        // Prevents ArrayOutOfBoundsException, stops crashing if user doesn't enter a location and hits submit
         if (doble.length > 0) {
 
             // to plot the midPoint, these variables will hold the averages
@@ -104,6 +110,11 @@ public class MapsActivity extends FragmentActivity {
 
             Log.d("midPoint Lat: ", Double.toString(midPointLat));
             Log.d("midPoint Long; ", Double.toString(midPointLong));
+
+            // Connect to the Google Places API and get back some JSON data
+            PlacesApiTask task = new PlacesApiTask();
+            task.execute();
+
         }
     }
 
@@ -119,17 +130,66 @@ public class MapsActivity extends FragmentActivity {
 
             String unparsedJSON = null;
 
-            // uncomment
 
-//
-//            try {
-//
-//                // Construct the URL for the Google Places Search API
-//                String baseURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
-//                String location = Double.toString(midPointLat) + "," + Double.toString(midPointLong);
-//
-//
-//            }
+            try {
+
+                // Construct the URL for the Google Places Search API
+                String baseURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
+                String location = Double.toString(midPointLat) + "," + Double.toString(midPointLong);
+                String KEY = "&radius=100&key=AIzaSyCjINkJY8LZrDwYtERoTfg0ZIESm63GPR8";
+
+                String URLstring = baseURL + location + KEY;
+
+                URL url = new URL(URLstring);
+
+                Log.d("MapsActivity", URLstring);
+
+                // open the connection and create the request
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+
+                if (inputStream == null) {
+                    return null;
+                }
+
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line + "\n");
+                }
+
+                unparsedJSON = buffer.toString();
+
+                Log.d("Raw JSON", unparsedJSON);
+
+            }
+
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            finally {
+
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    }
+                    catch (final IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
 
            return null;
 
