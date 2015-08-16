@@ -119,6 +119,12 @@ public class MapsActivity extends FragmentActivity {
     }
 
 
+    /****
+     *
+     * Asynchronously fetches data from Google Places API
+     *
+     */
+
     public class PlacesApiTask extends AsyncTask<Void, Void, Void> {
 
         @Override
