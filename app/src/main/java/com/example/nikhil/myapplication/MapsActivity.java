@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Set;
 
 public class MapsActivity extends FragmentActivity {
@@ -46,7 +47,16 @@ public class MapsActivity extends FragmentActivity {
         /// Get the bundle
 
         Bundle bundle = getIntent().getBundleExtra("bundle");
+
+        //stuff stored in the bundle
         double[] doble = bundle.getDoubleArray("positions");
+        ArrayList<String> namesList = bundle.getStringArrayList("place_names");
+        int namesListIndex = 0; // for naming the points plotted on the map
+
+        // check that names were transfered properly
+        for (String s : namesList)
+            Log.d("Name in namesList", s);
+
 
         // Prevents ArrayOutOfBoundsException, stops crashing if user doesn't enter a location and hits submit
         if (doble.length > 0) {
@@ -61,6 +71,7 @@ public class MapsActivity extends FragmentActivity {
             LatLng plotter;
 
             for (int i = 0; i < doble.length; i++) {
+
                 Log.d("Doubles passed:", Double.toString(doble[i]));
 
                 // Since we already initialized them to tbe the first values in the array, u need to subtract them to get rid of duplicates
@@ -73,7 +84,7 @@ public class MapsActivity extends FragmentActivity {
 
                 // all even indexes are latitude
                 // all odd indexes are longitude
-                // I want to get lat-long pairs
+                // want to get lat-long pairs
 
 
                 // Longitudes
@@ -83,7 +94,13 @@ public class MapsActivity extends FragmentActivity {
 
                     // plot the position
                     plotter = new LatLng(doble[i - 1], doble[i]);
-                    mMap.addMarker(new MarkerOptions().position(plotter));
+
+                    String title = namesList.get(namesListIndex + 1); // yolo, first item in listview is "" to make shore its not null
+                    Log.d("Title for point: ", title);
+
+                    mMap.addMarker(new MarkerOptions().position(plotter).title(title));
+
+                    namesListIndex++;
 
                     midPointLong += doble[i];
 
@@ -119,12 +136,6 @@ public class MapsActivity extends FragmentActivity {
     }
 
 
-    /****
-     *
-     * Asynchronously fetches data from Google Places API
-     *
-     */
-
     public class PlacesApiTask extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -148,7 +159,7 @@ public class MapsActivity extends FragmentActivity {
 
                 URL url = new URL(URLstring);
 
-                Log.d("MapsActivity", URLstring);
+                Log.d("URL: ", URLstring);
 
                 // open the connection and create the request
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -197,7 +208,7 @@ public class MapsActivity extends FragmentActivity {
 
             }
 
-           return null;
+            return null;
 
         }
     }

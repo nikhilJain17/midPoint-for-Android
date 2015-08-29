@@ -55,11 +55,10 @@
         android:layout_below="@+id/typeEditText"
         android:layout_above="@+id/submitButton" />
 
-    <Button
+    <ImageView
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+"
         android:id="@+id/addButton"
         android:onClick="onAddButtonClick"
         android:layout_alignParentTop="true"
