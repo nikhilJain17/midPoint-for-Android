@@ -101,7 +101,7 @@ public class MapsActivity extends FragmentActivity {
                     // plot the position
                     plotter = new LatLng(doble[i - 1], doble[i]);
 
-                    String title = namesList.get(namesListIndex + 1); // yolo, first item in listview is "" to make shore its not null
+                    String title = namesList.get(namesListIndex); // yolo, first item in listview is "" to make shore its not null
                     Log.d("Title for point: ", title);
 
                     mMap.addMarker(new MarkerOptions().position(plotter).title(title));
