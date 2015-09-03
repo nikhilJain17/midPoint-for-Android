@@ -12,6 +12,8 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -126,8 +128,13 @@ public class MapsActivity extends FragmentActivity {
             midPointLat = midPointLat / (doble.length / 2);
             midPointLong = midPointLong / (doble.length / 2);
 
+
+            // TODO Plot the midpoint and maybe the locations around it too, in a circle
+
+            // draw the midpoint
             LatLng midPoint = new LatLng(midPointLat, midPointLong);
-            mMap.addMarker(new MarkerOptions().position(midPoint).draggable(false).title("midPoint"));
+            mMap.addMarker(new MarkerOptions().position(midPoint).draggable(false).title("midPoint").icon(BitmapDescriptorFactory.fromResource(R.mipmap.radio_tower))); // draw a radio tower for the midpoint
+            // TODO Change the icon of the midpoint pls, make a custom one
 
             Log.d("midPoint Lat: ", Double.toString(midPointLat));
             Log.d("midPoint Long; ", Double.toString(midPointLong));
@@ -163,7 +170,8 @@ public class MapsActivity extends FragmentActivity {
                 // Construct the URL for the Google Places Search API
                 String baseURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
                 String location = Double.toString(midPointLat) + "," + Double.toString(midPointLong);
-                String KEY = "&radius=100&key=AIzaSyCjINkJY8LZrDwYtERoTfg0ZIESm63GPR8";
+//                String KEY = "&radius=100&key=AIzaSyCjINkJY8LZrDwYtERoTfg0ZIESm63GPR8";
+                String KEY = "&radius=100&key=AIzaSyCXPJvElkLtIxosfqKslsCqger_muJUlfI";
 
                 String URLstring = baseURL + location + KEY;
 
