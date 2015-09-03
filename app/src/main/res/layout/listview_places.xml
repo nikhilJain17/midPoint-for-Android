@@ -7,16 +7,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/placesTextView"
-        android:text="sampel text"
         android:textSize="20sp"
         android:layout_margin="10dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="x"
-        android:layout_margin="10dp"
-
-        />
 
 </LinearLayout>

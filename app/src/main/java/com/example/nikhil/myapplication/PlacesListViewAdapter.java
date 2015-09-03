@@ -40,6 +40,7 @@ public class PlacesListViewAdapter extends ArrayAdapter<String> {
         placeTextView.setText(place);
 
 
+
         // return the view so it can be displayed
         return view;
 
