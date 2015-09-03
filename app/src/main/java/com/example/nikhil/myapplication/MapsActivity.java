@@ -171,7 +171,7 @@ public class MapsActivity extends FragmentActivity {
                 String baseURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
                 String location = Double.toString(midPointLat) + "," + Double.toString(midPointLong);
 //                String KEY = "&radius=100&key=AIzaSyCjINkJY8LZrDwYtERoTfg0ZIESm63GPR8";
-                String KEY = "&radius=100&key=AIzaSyCXPJvElkLtIxosfqKslsCqger_muJUlfI";
+                String KEY = "&radius=100&key=AIzaSyBi8Ybo_2QPTKc9CBd3C7yJrleiqUDiQtY";
 
                 String URLstring = baseURL + location + KEY;
 
