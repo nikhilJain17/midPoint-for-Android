@@ -36,7 +36,15 @@ public class MapsActivity extends FragmentActivity {
     double midPointLat;
     double midPointLong;
 
-    // this is the final location
+
+    // this is the final location (point of interest)
+    double poiLat;
+    double poiLong;
+
+
+    // type of place user wants to visit
+    String typeOfPlace;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +65,12 @@ public class MapsActivity extends FragmentActivity {
 
         Bundle bundle = getIntent().getBundleExtra("bundle");
 
-        //stuff stored in the bundle
+        // stuff stored in the bundle
         double[] doble = bundle.getDoubleArray("positions");
         ArrayList<String> namesList = bundle.getStringArrayList("place_names");
+        typeOfPlace = bundle.getString("type");
+
+
         int namesListIndex = 0; // for naming the points plotted on the map
 
         // check that names were transfered properly
@@ -179,12 +190,11 @@ public class MapsActivity extends FragmentActivity {
                 // Construct the URL for the Google Places Search API
                 String baseURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
                 String location = Double.toString(midPointLat) + "," + Double.toString(midPointLong);
-//                String KEY = "&radius=100&key=AIzaSyCjINkJY8LZrDwYtERoTfg0ZIESm63GPR8";
-
+                String types = "&types=" + typeOfPlace;
                 // TODO Add a slider to allow the user to choose the radius they want to search in
-                String KEY = "&radius=100&key=AIzaSyBi8Ybo_2QPTKc9CBd3C7yJrleiqUDiQtY";
+                String KEY = "&rankby=distance&key=AIzaSyBi8Ybo_2QPTKc9CBd3C7yJrleiqUDiQtY";
 
-                String URLstring = baseURL + location + KEY;
+                String URLstring = baseURL + location + types + KEY;
 
                 URL url = new URL(URLstring);
 
