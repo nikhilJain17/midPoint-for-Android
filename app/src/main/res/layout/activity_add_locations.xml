@@ -7,7 +7,7 @@
 
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/addressEditText"
         android:hint="Enter an address or a place"
@@ -43,7 +43,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/addButton"
         android:layout_toEndOf="@+id/addButton"
-        android:text="x"
+        android:text="Clear"
         android:onClick="onClearButtonClick"/>
 
     <ListView

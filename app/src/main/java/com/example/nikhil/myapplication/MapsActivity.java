@@ -32,8 +32,11 @@ public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
+    // these are the averages of all the points the user entered
     double midPointLat;
     double midPointLong;
+
+    // this is the final location
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
