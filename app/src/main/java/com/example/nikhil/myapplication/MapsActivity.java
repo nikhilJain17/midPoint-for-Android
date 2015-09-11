@@ -21,6 +21,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,6 +49,9 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
     // type of place user wants to visit
     String typeOfPlace;
+
+    // This will be passed through the bundle to the DetailsActivity to display said details actively
+    String rootJsonStr;
 
 
     @Override
@@ -195,6 +200,10 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
             Intent intent = new Intent(this, DetailsActivity.class);
 
             // pass the bundle with the json information
+            Bundle jsonGoodies = new Bundle();
+            jsonGoodies.putString("rawJSON", rootJsonStr);
+
+            intent.putExtra("jsonBundle", jsonGoodies);
 
             startActivity(intent);
         }
@@ -252,7 +261,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 }
 
                 unparsedJSON = buffer.toString();
-
+                rootJsonStr = unparsedJSON;
                 Log.d("Raw JSON", unparsedJSON);
 
             }
