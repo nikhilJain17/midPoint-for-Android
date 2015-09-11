@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 public class DetailsActivity extends ActionBarActivity {
 
-    @Override
+    @Override   
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
