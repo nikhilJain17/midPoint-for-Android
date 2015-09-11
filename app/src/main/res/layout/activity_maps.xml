@@ -6,10 +6,10 @@
     tools:context="com.example.nikhil.myapplication.MapsActivity"
     android:name="com.google.android.gms.maps.SupportMapFragment">
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="More Details"/>
+        android:text="Tap the midpoint for more info"/>
 
 </fragment>
 

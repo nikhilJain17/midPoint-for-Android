@@ -1,11 +1,13 @@
 package com.example.nikhil.myapplication;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -16,6 +18,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.BufferedReader;
@@ -28,7 +31,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class MapsActivity extends FragmentActivity {
+public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -153,6 +156,7 @@ public class MapsActivity extends FragmentActivity {
             // draw the midpoint
             LatLng midPoint = new LatLng(midPointLat, midPointLong);
             mMap.addMarker(new MarkerOptions().position(midPoint).draggable(false).title("midPoint").icon(BitmapDescriptorFactory.fromResource(R.mipmap.radio_tower))); // draw a radio tower for the midpoint
+
             // TODO Change the icon of the midpoint pls, make a custom one
 
             Log.d("midPoint Lat: ", Double.toString(midPointLat));
@@ -168,7 +172,34 @@ public class MapsActivity extends FragmentActivity {
             PlacesApiTask task = new PlacesApiTask();
             task.execute();
 
+
         }
+
+
+    }
+
+
+    /**
+     * If the user presses the midpoint, then they can view more detailed info on that place*/
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+
+        // display the name of the place
+        marker.showInfoWindow();
+
+        // verify that the user clicked the midpoint
+        if (marker.getTitle().equals("midPoint")) {
+
+            // create an intent with the intent of starting the detailsactivity
+
+            Intent intent = new Intent(this, DetailsActivity.class);
+
+            // pass the bundle with the json information
+
+            startActivity(intent);
+        }
+
+        return true;
     }
 
 
@@ -324,6 +355,7 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
+        mMap.setOnMarkerClickListener(this);
 
     }
 }
