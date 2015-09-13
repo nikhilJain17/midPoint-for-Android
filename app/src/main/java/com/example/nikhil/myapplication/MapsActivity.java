@@ -170,7 +170,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
 
             // Center the camera on the midpoint (why not let it fly)
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(midPoint, 5, 0, 0)));
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(midPoint, 14, 0, 0)));
 
 
             // Connect to the Google Places API and get back some JSON data
