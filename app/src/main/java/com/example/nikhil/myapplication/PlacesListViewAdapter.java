@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by nikhil on 9/3/15.
+ * Custom ListViewAdapter for custom listview layout we are using
  */
 
 public class PlacesListViewAdapter extends ArrayAdapter<String> {

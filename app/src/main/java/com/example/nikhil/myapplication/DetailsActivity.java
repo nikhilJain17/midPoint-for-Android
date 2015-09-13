@@ -7,7 +7,13 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class DetailsActivity extends ActionBarActivity {
+
+    String rawJSON;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +25,15 @@ public class DetailsActivity extends ActionBarActivity {
         // get the JSON data passed through a bundle
         try {
 
-            String rawJSON = getIntent().getExtras().getBundle("jsonBundle").getString("rawJSON");
+            rawJSON = getIntent().getExtras().getBundle("jsonBundle").getString("rawJSON");
             test.setText(rawJSON);
+
+            try {
+                parseAndDisplayJson(rawJSON);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            } // end of JSONException try/catch
 
         }
 
@@ -29,11 +42,27 @@ public class DetailsActivity extends ActionBarActivity {
             e.printStackTrace();
             Toast.makeText(this, "NullPointerException with JSON", Toast.LENGTH_SHORT).show();
 
-        }
+        } // end of NullPointerException try/catch
 
 
 
-    }
+    } // end of onCreate
+
+
+
+    // Parses the JSON and displays it on the screen
+    private void parseAndDisplayJson(String json) throws JSONException {
+
+        JSONObject root = new JSONObject(json);
+        JSONArray jsonArray = root.getJSONArray("results");
+        JSONObject firstResult = jsonArray.getJSONObject(0);
+        String name = firstResult.getString("name");
+
+        Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
+
+
+
+    } // end of parseAndDisplayJSON
 
 
 
