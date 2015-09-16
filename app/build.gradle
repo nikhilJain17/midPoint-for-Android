@@ -21,7 +21,12 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    // support for older versions
+    // play services (google maps)
+    // admob
+    // socket.io
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.google.android.gms:play-services:7.8.0'
     compile 'com.google.android.gms:play-services-ads:7.8.0'
+    compile 'io.socket:socket.io-client:0.6.1'
 }

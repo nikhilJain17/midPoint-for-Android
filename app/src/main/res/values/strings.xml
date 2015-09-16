@@ -15,5 +15,6 @@
         TODO Generate a new thing here with a legit account and stuff
     <!- -->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="title_activity_login">Sign in</string>
 
 </resources>
