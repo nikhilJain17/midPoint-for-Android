@@ -8,9 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import io.socket.*;
-import io.socket.client.IO;
-import io.socket.client.Socket;
+//import io.socket.*;
+//import io.socket.client.IO;
+//import io.socket.client.Socket;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -20,7 +20,7 @@ public class LoginActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button mLoginButton = (Button) findViewById(R.id.login);
+        Button mLoginButton = (Button) findViewById(R.id.button);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
