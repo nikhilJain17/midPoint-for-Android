@@ -10,6 +10,7 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 public class DetailsActivity extends ActionBarActivity {
 
@@ -20,13 +21,11 @@ public class DetailsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        TextView test = (TextView) findViewById(R.id.test);
 
         // get the JSON data passed through a bundle
         try {
 
             rawJSON = getIntent().getExtras().getBundle("jsonBundle").getString("rawJSON");
-            test.setText(rawJSON);
 
             try {
                 parseAndDisplayJson(rawJSON);
@@ -56,9 +55,19 @@ public class DetailsActivity extends ActionBarActivity {
         JSONObject root = new JSONObject(json);
         JSONArray jsonArray = root.getJSONArray("results");
         JSONObject firstResult = jsonArray.getJSONObject(0);
+
+        // Get all the necessary details
         String name = firstResult.getString("name");
+        TextView nameTV = (TextView) findViewById(R.id.detail_name);
+        nameTV.setText("Place Name: " + name);
+
+        String address = firstResult.getString("vicinity");
+        TextView addressTV = (TextView) findViewById(R.id.detail_address);
+        addressTV.setText("Address: " + address);
+
 
         Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
+
 
 
 
