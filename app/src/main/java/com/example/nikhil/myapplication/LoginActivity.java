@@ -3,16 +3,23 @@ package com.example.nikhil.myapplication;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 
 //import io.socket.*;
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -44,8 +51,24 @@ public class LoginActivity extends ActionBarActivity {
 //            mSocket = IO.socket("http://chat.socket.io");
             mSocket.connect();
 
-            // auto log in
-//        mSocket.emit("add user", "Alias Parker");
+            // emit test event TODO get rid of this
+            mSocket.emit("attempted login", "darthbatman", "password44");
+
+            // add a lsitener to check if cheese went through
+            mSocket.on("login success", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+
+                    try {
+                        JSONArray obj = (JSONArray) args[0];
+                        Log.d("shitson", obj.get(0).toString());
+                    }
+                    catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
 
         }
         catch (URISyntaxException e) {
