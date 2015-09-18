@@ -54,6 +54,9 @@ public class LoginActivity extends ActionBarActivity {
             // emit test event TODO get rid of this
             mSocket.emit("attempted login", "darthbatman", "password44");
 
+            // // STOPSHIP: 9/17/15
+            // TODO Finalize login process
+            // TODO THIS IS JUST A TEST
             // add a lsitener to check if cheese went through
             mSocket.on("login success", new Emitter.Listener() {
                 @Override
@@ -61,7 +64,8 @@ public class LoginActivity extends ActionBarActivity {
 
                     try {
                         JSONArray obj = (JSONArray) args[0];
-                        Log.d("shitson", obj.get(0).toString());
+                        Log.d("yarfyl", obj.get(0).toString());
+                        Log.d("yarfyl", obj.get(1).toString());
                     }
                     catch (JSONException e) {
                         e.printStackTrace();
