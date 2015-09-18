@@ -8,9 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.net.URISyntaxException;
+
 //import io.socket.*;
-//import io.socket.client.IO;
-//import io.socket.client.Socket;
+import io.socket.client.IO;
+import io.socket.client.Socket;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -34,12 +36,27 @@ public class LoginActivity extends ActionBarActivity {
         });
 
 
-        // Test Socket.io connection, TODO Get rid of it later
-//        Socket mSocket;
-//
-//        mSocket = IO.socket("http://chat.socket.io");
+        // Connect to server
+        Socket mSocket;
 
-    }
+        try {
+            mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
+//            mSocket = IO.socket("http://chat.socket.io");
+            mSocket.connect();
+
+            // auto log in
+//        mSocket.emit("add user", "Alias Parker");
+
+        }
+        catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+
+
+    } // end of onCreate();
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
