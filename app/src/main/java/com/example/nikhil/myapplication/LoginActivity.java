@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -162,12 +163,16 @@ public class LoginActivity extends ActionBarActivity {
             public void call(Object... args) {
 
 
+                // TODO Add a display or something..a.wertaw/e we wj
+
+
                 Log.d("LOGIN", "Failure");
 
             }
         });
 
     } // end of onLoginButtonClick()
+
 
 
 
