@@ -53,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create New Account"
-        android:id="@+id/button3"
+        android:id="@+id/createNewAccountButton"
         android:layout_below="@+id/loginButton"
         android:layout_marginTop="71dp"
         android:layout_alignParentLeft="true"

@@ -48,6 +48,16 @@ public class LoginActivity extends ActionBarActivity {
         passwordET = (EditText) findViewById(R.id.passwordET);
 
 
+        // Button lsitener for signup
+        Button signupButton = (Button) findViewById(R.id.createNewAccountButton);
+        signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+                startActivity(intent);
+            }
+        });
+
 //        Button mLoginButton = (Button) findViewById(R.id.loginButton);
 //        mLoginButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
