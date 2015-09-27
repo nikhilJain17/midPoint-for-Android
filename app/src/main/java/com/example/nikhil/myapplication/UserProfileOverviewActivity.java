@@ -72,7 +72,7 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
                     arr = (JSONArray) args[0];
 
                     // log the messages
-                    for (int i = 0; i < args.length; i++) {
+                    for (int i = 0; i < arr.length(); i++) {
 
                         String o = arr.getString(i);
 
