@@ -3,6 +3,7 @@ package com.example.nikhil.myapplication;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,11 @@ import io.socket.emitter.Emitter;
 
 public class LoginActivity extends ActionBarActivity {
 
+    SharedPreferences sharedPrefs;
+    SharedPreferences.Editor editor;
+    final String FILENAME = "aguero";
+
+
     Socket mSocket;
 
     String enteredUsername;
@@ -42,6 +48,9 @@ public class LoginActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+        sharedPrefs = getSharedPreferences(FILENAME, 0);
 
 
         usernameET = (EditText) findViewById(R.id.usernameET);
