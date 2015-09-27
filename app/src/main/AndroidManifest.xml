@@ -79,7 +79,7 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login"
+            android:label="mid.Point"
             android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -94,6 +94,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nikhil.myapplication.LoginActivity" />
+        </activity>
+        <activity
+            android:name=".UserProfileOverviewActivity"
+            android:label="@string/title_activity_user_profile_overview"
+            android:parentActivityName=".AddLocations" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.nikhil.myapplication.AddLocations" />
         </activity>
     </application>
 
