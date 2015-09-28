@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Button;
+import android.widget.EditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +30,9 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
     ListView messagesListView;
     ArrayList<String> messages;
 
+    Button addFriendsButton;
+    EditText addFriendsET;
+
 
     // sharedpreferences stuff
     SharedPreferences sharedPrefs;
@@ -40,14 +46,31 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile_overview);
 
+        // add friends
+        addFriendsButton = (Button) findViewById(R.id.addFriendButton);
+        addFriendsET = (EditText) findViewById(R.id.addFriendET);
 
+
+        // sharedprefs
         sharedPrefs = getSharedPreferences(FILENAME, 0);
         username = sharedPrefs.getString("username", "ERROR");
 
+        // messages
         messagesListView = (ListView) findViewById(R.id.messagesListView);
 
         messages = new ArrayList<String>();
 
+
+        // socket.io
+
+        // connect to the server
+        try {
+            mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
+            mSocket.connect();
+        }
+        catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
         try {
             extractMessages();
@@ -62,12 +85,23 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
 
 
 
+    // click handler for add friend button
+    public void onAddFriendButtonClick(View view) {
+
+        String name = addFriendsET.getText().toString();
+
+        // emit the event
+        mSocket.emit("add friend", username, name);
+
+        // listen for success
+        // TODO rip
+
+    }
+
+
+
     // access the messages
     private void extractMessages() throws Exception {
-
-        // connect to the server
-        mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
-        mSocket.connect();
 
         // emit the event that requests messages
         // TODO Store the username to replace the hardcoded string.
