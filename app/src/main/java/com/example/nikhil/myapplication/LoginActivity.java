@@ -51,7 +51,7 @@ public class LoginActivity extends ActionBarActivity {
 
 
         sharedPrefs = getSharedPreferences(FILENAME, 0);
-
+        editor = sharedPrefs.edit();
 
         usernameET = (EditText) findViewById(R.id.usernameET);
         passwordET = (EditText) findViewById(R.id.passwordET);
@@ -153,6 +153,11 @@ public class LoginActivity extends ActionBarActivity {
                 public void call(Object... args) {
 
                     Log.d("LOGIN", "Success");
+
+                    // store the username and password into a sharedpreferences for later usage
+                    editor.putString("username", enteredUsername);
+                    editor.putString("password", enteredPassword);
+                    editor.commit();
 
                     try {
                         JSONArray obj = (JSONArray) args[0];

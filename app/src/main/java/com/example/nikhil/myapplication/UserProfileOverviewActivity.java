@@ -1,5 +1,6 @@
 package com.example.nikhil.myapplication;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,12 +28,21 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
     ArrayList<String> messages;
 
 
+    // sharedpreferences stuff
+    SharedPreferences sharedPrefs;
+    SharedPreferences.Editor editor;
+    final String FILENAME = "aguero";
+
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile_overview);
 
+
+        sharedPrefs = getSharedPreferences(FILENAME, 0);
+        username = sharedPrefs.getString("username", "ERROR");
 
         messagesListView = (ListView) findViewById(R.id.messagesListView);
 
@@ -61,7 +71,7 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
 
         // emit the event that requests messages
         // TODO Store the username to replace the hardcoded string.
-        mSocket.emit("check messages", "darthbatman");
+        mSocket.emit("check messages", username);
 
         mSocket.on("new messages", new Emitter.Listener() {
             @Override
