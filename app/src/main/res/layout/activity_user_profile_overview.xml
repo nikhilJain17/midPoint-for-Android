@@ -34,4 +34,11 @@
         android:layout_toEndOf="@+id/addFriendET"
         android:onClick="onAddFriendButtonClick"/>
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/friendsListView"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/messagesListView" />
+
 </RelativeLayout>

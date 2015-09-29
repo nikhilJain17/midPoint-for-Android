@@ -38,6 +38,11 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
     ArrayList<String> messages;
     ArrayAdapter<String> adapter;
 
+    // friends
+    ListView friendsListView;
+    ArrayList<String> friends;
+    ArrayAdapter<String> friendsAdapter;
+
     // add friends
     Button addFriendsButton;
     EditText addFriendsET;
@@ -70,8 +75,11 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
 
         // messages
         messagesListView = (ListView) findViewById(R.id.messagesListView);
-
         messages = new ArrayList<String>();
+
+        // friends
+        friendsListView = (ListView) findViewById(R.id.friendsListView);
+        friends = new ArrayList<String>();
 
 
         // friend requests
@@ -90,6 +98,9 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
         try {
             extractMessages();
             displayMessages();
+
+            extractFriends();
+            displayFriends();
         }
         catch (Exception e) {
             // URISyntaxException
@@ -189,7 +200,6 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
     private void extractMessages() throws Exception {
 
         // emit the event that requests messages
-        // TODO Store the username to replace the hardcoded string.
         mSocket.emit("check messages", username);
 
         mSocket.on("new messages", new Emitter.Listener() {
@@ -210,12 +220,9 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
 
                     } // end of for
 
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
 
 
             }
@@ -235,6 +242,57 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
         messagesListView.setAdapter(adapter);
 
     }
+
+
+
+    // access the friend data
+    private void extractFriends() throws Exception {
+
+        // emit the event that requests friends (sounds pretty sad...)
+        mSocket.emit("want friends", username);
+
+        // =) tfw u receive friends
+        mSocket.on("some friends", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+
+                JSONArray arr; // pirates!
+                try {
+                    arr = (JSONArray) args[0];
+
+                    // log da friends
+                    for (int i = 0; i < arr.length(); i++) {
+
+                        String o = arr.getString(i);
+
+                        Log.d("friends", o);
+                        friends.add(o);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } // end of call
+        }); // end of friend listener
+
+    } // end of extract friends
+
+
+    // display the friends
+    private void displayFriends() {
+        friendsAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, friends);
+
+        friendsListView.setAdapter(friendsAdapter);
+    }
+
+
+
+
+
+
+
 
 
     @Override
