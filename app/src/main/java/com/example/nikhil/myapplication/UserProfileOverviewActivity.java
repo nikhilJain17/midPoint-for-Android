@@ -1,5 +1,7 @@
 package com.example.nikhil.myapplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,16 +9,20 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -24,12 +30,15 @@ import io.socket.emitter.Emitter;
 
 public class UserProfileOverviewActivity extends ActionBarActivity {
 
-
+    // all hail
     Socket mSocket;
 
+    // messages
     ListView messagesListView;
     ArrayList<String> messages;
+    ArrayAdapter<String> adapter;
 
+    // add friends
     Button addFriendsButton;
     EditText addFriendsET;
 
@@ -40,6 +49,7 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
     final String FILENAME = "aguero";
 
     String username;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +65,18 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
         sharedPrefs = getSharedPreferences(FILENAME, 0);
         username = sharedPrefs.getString("username", "ERROR");
 
+        // store the arraylist in the sharedpreferences so that u can delete safely
+
+
         // messages
         messagesListView = (ListView) findViewById(R.id.messagesListView);
 
         messages = new ArrayList<String>();
 
 
-        // socket.io
+        // friend requests
+        setupAcceptRequests();
+
 
         // connect to the server
         try {
@@ -88,6 +103,9 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
     // click handler for add friend button
     public void onAddFriendButtonClick(View view) {
 
+        // lol display a success message before you do anything
+        Toast.makeText(this, "Friend request sent!", Toast.LENGTH_SHORT).show();
+
         String name = addFriendsET.getText().toString();
 
         // emit the event
@@ -97,6 +115,73 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
         // TODO rip
 
     }
+
+
+    // set ontouch listener for accepting requests on the listview
+    private void setupAcceptRequests() {
+
+        // set the ontouch listener
+        messagesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                final String theirUsername = messages.get(position);
+
+                // show an alertdialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileOverviewActivity.this, AlertDialog.THEME_HOLO_DARK);
+
+                builder.setTitle("Accept friend request?");
+
+                // yes, they accept
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // emit the socket.io event
+                        mSocket.emit("accept friend request", username, theirUsername);
+
+                        // delete the request from the arraylist and the set
+                        messages.remove(position);
+
+                        // update the display
+                        adapter.notifyDataSetChanged();
+
+                    } // end of onPositiveButtonCLick
+
+                }); // end of setPositive Button
+
+
+
+                // no, they dont accept
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // delete the request from the arraylist
+                        messages.remove(position);
+
+                        // update the display
+                        adapter.notifyDataSetChanged();
+
+                    }
+                }); // end of setNegativeButton
+
+                builder.create();
+                builder.show();
+
+
+            } // end of OnItemClick()
+
+
+
+        }); // end of OnItemCLickLIstener;
+
+
+        // SHOW THE DIALOG
+
+    }
+
+
 
 
 
@@ -144,7 +229,7 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
     // display the messages on the listview
     private void displayMessages() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+       adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, messages);
 
         messagesListView.setAdapter(adapter);
