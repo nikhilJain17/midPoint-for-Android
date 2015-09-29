@@ -2,6 +2,7 @@ package com.example.nikhil.myapplication;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -113,6 +114,10 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
 
     // click handler for add friend button
     public void onAddFriendButtonClick(View view) {
+
+        // TODO JUST TESTING DELETE THIS Stuff klater
+        Intent intnet = new Intent(this, FriendsActivity.class);
+        startActivity(intnet);
 
         // lol display a success message before you do anything
         Toast.makeText(this, "Friend request sent!", Toast.LENGTH_SHORT).show();

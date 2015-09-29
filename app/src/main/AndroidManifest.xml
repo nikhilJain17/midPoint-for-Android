@@ -103,6 +103,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nikhil.myapplication.AddLocations" />
         </activity>
+        <activity
+            android:name=".FriendsActivity"
+            android:label="@string/title_activity_friends"
+            android:parentActivityName=".UserProfileOverviewActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.nikhil.myapplication.UserProfileOverviewActivity" />
+        </activity>
     </application>
 
 </manifest>

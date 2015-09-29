@@ -18,5 +18,6 @@
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_signup">Create an Account</string>
     <string name="title_activity_user_profile_overview">View Your Profile</string>
+    <string name="title_activity_friends">Your Friends</string>
 
 </resources>

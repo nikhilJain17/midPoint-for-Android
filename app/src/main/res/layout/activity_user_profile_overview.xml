@@ -41,4 +41,25 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/messagesListView" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Friend Requests"
+        android:id="@+id/textView"
+        android:layout_below="@+id/addFriendET"
+        android:layout_centerHorizontal="true"
+        android:textColor="#020589" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Friends"
+
+        android:id="@+id/textView2"
+        android:layout_below="@+id/messagesListView"
+        android:layout_centerHorizontal="true"
+        android:textColor="#0a08b0" />
+
 </RelativeLayout>
