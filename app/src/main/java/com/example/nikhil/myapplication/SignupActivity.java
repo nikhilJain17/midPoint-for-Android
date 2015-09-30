@@ -23,12 +23,16 @@ public class SignupActivity extends ActionBarActivity {
 
     Button signupButton;
 
+    // testing
+    boolean suInUse;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        suInUse = false;
 
         // Initialize GUI component objects
         nameET = (EditText) findViewById(R.id.nameET);
@@ -95,6 +99,20 @@ public class SignupActivity extends ActionBarActivity {
                     Log.d("Create Account", "YES");
                 }
             });
+
+
+            // listen for username in use
+            mSocket.on("su fail in use", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+
+                    // TODO create a display for this message
+                    Log.d("Signup", "signup in use");
+                    suInUse = true;
+
+                }
+            });
+
 
         }
 

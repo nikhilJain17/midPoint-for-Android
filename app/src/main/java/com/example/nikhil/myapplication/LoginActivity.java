@@ -67,18 +67,6 @@ public class LoginActivity extends ActionBarActivity {
             }
         });
 
-//        Button mLoginButton = (Button) findViewById(R.id.loginButton);
-//        mLoginButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                // TODO Actually do stuff
-//                // TODO This is just a dummy login thing
-//                Intent intent = new Intent(getApplicationContext(), AddLocations.class);
-//                startActivity(intent);
-//
-//            }
-//        });
 
 
         // Connect to server
@@ -194,6 +182,8 @@ public class LoginActivity extends ActionBarActivity {
 
             }
         });
+
+
 
     } // end of onLoginButtonClick()
 

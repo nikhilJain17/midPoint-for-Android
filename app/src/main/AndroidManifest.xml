@@ -111,6 +111,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nikhil.myapplication.UserProfileOverviewActivity" />
         </activity>
+        <activity
+            android:name=".Test"
+            android:label="@string/title_activity_test"
+            android:parentActivityName=".UserProfileOverviewActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.nikhil.myapplication.UserProfileOverviewActivity" />
+        </activity>
     </application>
 
 </manifest>
