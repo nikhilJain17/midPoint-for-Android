@@ -88,7 +88,9 @@ public class FriendsActivity extends ActionBarActivity {
                         String o = arr.getString(i);
 
                         Log.d("FRIENDS(Activity)", o);
-                        friends.add(o);
+                        // ama
+                        if (!o.contains("would like to be friends"))
+                            friends.add(o);
 
                     }
                 } catch (JSONException e) {

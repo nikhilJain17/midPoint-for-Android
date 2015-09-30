@@ -203,6 +203,7 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
     }
 
 
+    // TODO Delete the extract and display methods
 
 
 

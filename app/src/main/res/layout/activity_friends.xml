@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/friendLV"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentTop="true" />
 
 
 </RelativeLayout>
