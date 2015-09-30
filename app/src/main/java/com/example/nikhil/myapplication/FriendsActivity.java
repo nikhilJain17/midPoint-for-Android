@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,10 +47,14 @@ public class FriendsActivity extends ActionBarActivity {
         // listview stuff
         friendsListView = (ListView) findViewById(R.id.friendLV);
 
+        friends = new ArrayList<String>();
+
         // CONNECT TO SERVER
         try {
             mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
             mSocket.connect();
+
+//            Toast.makeText(this, username, Toast.LENGTH_SHORT).show();
 
             extractFriends();
             displayFriends();
@@ -82,7 +87,7 @@ public class FriendsActivity extends ActionBarActivity {
 
                         String o = arr.getString(i);
 
-                        Log.d("FRIENDS", o);
+                        Log.d("FRIENDS(Activity)", o);
                         friends.add(o);
 
                     }
