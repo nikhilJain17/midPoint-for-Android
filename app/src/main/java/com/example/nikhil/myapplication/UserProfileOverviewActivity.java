@@ -203,9 +203,16 @@ public class UserProfileOverviewActivity extends ActionBarActivity {
     }
 
 
+    // button handler for friend request button
+    public void onFriendRequestButtonClick(View v) {
+        Intent intent = new Intent(getApplicationContext(), FriendRequestActivity.class);
+        startActivity(intent);
+    }
+
+
+
+
     // TODO Delete the extract and display methods
-
-
 
     // access the messages
     private void extractMessages() throws Exception {

@@ -119,6 +119,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nikhil.myapplication.UserProfileOverviewActivity" />
         </activity>
+        <activity
+            android:name=".FriendRequestActivity"
+            android:label="@string/title_activity_friend_request"
+            android:parentActivityName=".UserProfileOverviewActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.nikhil.myapplication.UserProfileOverviewActivity" />
+        </activity>
     </application>
 
 </manifest>
