@@ -1,13 +1,18 @@
 package com.example.nikhil.myapplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,6 +64,9 @@ public class FriendRequestActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
+        // listener to accept and decline requests
+        setupListviewListener();
+
     }
 
 
@@ -102,6 +110,70 @@ public class FriendRequestActivity extends ActionBarActivity {
 
 
     } // end of extract friend requests
+
+
+    // set up onclick listener for listview
+    private void setupListviewListener() {
+
+        friendRequestLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                final int pos = position;
+
+                // build an alert dialog to handle the stuff
+                AlertDialog.Builder builder = new AlertDialog.Builder(FriendRequestActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+
+                builder.setTitle("What do you want to do?");
+
+                // accept the request
+                builder.setPositiveButton("Accept Request", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // who sent the request
+                        String theirName = friendRequests.get(pos);
+
+//                        Toast.makeText(getApplicationContext(), theirName, Toast.LENGTH_SHORT).show();
+                        Log.d("Accept request", theirName);
+
+                        // emit the accept request event
+                        mSocket.emit("accept friend request", username, theirName);
+
+                        // delete the message
+                        mSocket.emit("rm msg", username, pos);
+
+                        // update the arraylist
+                        friendRequests.remove(pos);
+                        mAdapter.notifyDataSetChanged();
+
+                    }
+                }); // end of onclick listener
+
+                // delete the request
+                builder.setNegativeButton("Delete Request", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // delete the message
+                        mSocket.emit("rm msg", username, pos);
+
+                        // update the arraylist
+                        friendRequests.remove(pos);
+                        mAdapter.notifyDataSetChanged();
+
+                    }
+                }); // end of onclick listener
+
+
+                builder.create();
+                builder.show();
+
+            }
+
+        }); // end of listener
+
+    } // end of setupListviewListener
 
 
 
