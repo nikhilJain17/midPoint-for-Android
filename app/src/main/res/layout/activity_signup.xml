@@ -14,22 +14,20 @@
         android:hint="Name"
         android:ems="10"
         android:id="@+id/nameET"
+        android:textColor="#727272"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/signupButton"
-        android:layout_toStartOf="@+id/signupButton" />
+        android:layout_alignEnd="@+id/addressET" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/usernameET"
         android:hint="Username"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/signupButton"
-        android:layout_toEndOf="@+id/signupButton" />
+        android:textColor="#727272"
+        android:layout_below="@+id/nameET"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/nameET" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -38,12 +36,10 @@
         android:ems="10"
         android:id="@+id/passwordET"
         android:hint="Password"
+        android:textColor="#727272"
         android:layout_below="@+id/usernameET"
-        android:layout_marginTop="38dp"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/nameET"
-        android:layout_alignEnd="@+id/nameET" />
+        android:layout_alignEnd="@+id/passwordConfirmET" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -52,11 +48,10 @@
         android:ems="10"
         android:id="@+id/passwordConfirmET"
         android:hint="Confirm Password"
-        android:layout_alignTop="@+id/passwordET"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/signupButton"
-        android:layout_toEndOf="@+id/signupButton" />
+        android:textColor="#727272"
+        android:layout_below="@+id/passwordET"
+        android:layout_alignEnd="@+id/addressET"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -65,11 +60,9 @@
         android:ems="10"
         android:id="@+id/addressET"
         android:hint="(Optional) Frequently Used Address"
+        android:textColor="#727272"
         android:layout_below="@+id/passwordConfirmET"
-        android:layout_marginTop="41dp"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
     <Button
@@ -77,8 +70,12 @@
         android:layout_height="wrap_content"
         android:text="Sign Up"
         android:id="@+id/signupButton"
-        android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true" />
+        android:background="#536DFE"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="90dp"
+        android:layout_below="@+id/addressET"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

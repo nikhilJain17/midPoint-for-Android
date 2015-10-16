@@ -1,5 +1,7 @@
 package com.example.nikhil.myapplication;
 
+import android.graphics.drawable.ColorDrawable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,13 +26,18 @@ public class SignupActivity extends ActionBarActivity {
     Button signupButton;
 
     // testing
-    boolean suInUse;
+    boolean suInUse; // sign up in use
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        // style action bar
+
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setBackgroundDrawable(new ColorDrawable(0xff536DFE));
 
         suInUse = false;
 
