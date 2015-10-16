@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdate;
@@ -264,6 +265,48 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         }
 
     }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        // place picking like a boss
+        if (requestCode == 1) {
+
+            if (resultCode == RESULT_OK) {
+
+
+                Bundle placeData = new Bundle();
+                Place place = PlacePicker.getPlace(data, this);
+
+                // gather some data about the place
+
+                String name = (String) place.getName();
+                String address = (String) place.getAddress();
+                String phoneNumber = (String) place.getPhoneNumber();
+                int priceLevel = place.getPriceLevel();
+                float rating = place.getRating();
+//                String website = place.getWebsiteUri().toString();
+
+
+                // store it in a bundle
+
+                placeData.putString("name", name);
+                placeData.putString("address", address);
+                placeData.putString("phoneNumber", phoneNumber);
+                placeData.putInt("priceLevel", priceLevel);
+                placeData.putFloat("rating", rating);
+//                placeData.putString("website", website);
+
+                // start the DetailsActivity that displays this info
+
+                Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+                intent.putExtra("placeData", placeData);
+                startActivity(intent);
+
+            } // end of is result code ok
+        }
+
+
+    } // end of func
 
     public class PlacesApiTask extends AsyncTask<Void, Void, Void> {
 

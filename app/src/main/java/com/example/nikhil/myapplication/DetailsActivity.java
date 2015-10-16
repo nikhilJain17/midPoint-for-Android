@@ -28,26 +28,41 @@ public class DetailsActivity extends ActionBarActivity {
         adView.loadAd(adRequest);
 
 
-        // get the JSON data passed through a bundle
-        try {
+        // Get the bundle data
+        Bundle data = getIntent().getBundleExtra("placeData");
+        String name = data.getString("name");
+        String address = data.getString("address");
+        String phoneNumber = data.getString("phoneNumber");
+        int priceLevel = data.getInt("priceLevel");
+        float rating = data.getFloat("rating");
+//        String website = data.getString("website");
 
-            rawJSON = getIntent().getExtras().getBundle("jsonBundle").getString("rawJSON");
+        Toast.makeText(this, name + rating, Toast.LENGTH_SHORT).show();
 
-            try {
-                parseAndDisplayJson(rawJSON);
-            }
-            catch (JSONException e) {
-                e.printStackTrace();
-            } // end of JSONException try/catch
 
-        }
 
-        catch (NullPointerException e) {
 
-            e.printStackTrace();
-            Toast.makeText(this, "NullPointerException with JSON", Toast.LENGTH_SHORT).show();
-
-        } // end of NullPointerException try/catch
+//
+//        // get the JSON data passed through a bundle
+//        try {
+//
+//            rawJSON = getIntent().getExtras().getBundle("jsonBundle").getString("rawJSON");
+//
+//            try {
+//                parseAndDisplayJson(rawJSON);
+//            }
+//            catch (JSONException e) {
+//                e.printStackTrace();
+//            } // end of JSONException try/catch
+//
+//        }
+//
+//        catch (NullPointerException e) {
+//
+//            e.printStackTrace();
+//            Toast.makeText(this, "NullPointerException with JSON", Toast.LENGTH_SHORT).show();
+//
+//        } // end of NullPointerException try/catch
 
 
 
