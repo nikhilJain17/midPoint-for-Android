@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +51,11 @@ public class LoginActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // style the action bar
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setBackgroundDrawable(new ColorDrawable(0xff03A9F4));
+//        mActionBar.setDisplayShowTitleEnabled(false);
+//        mActionBar.setDisplayShowTitleEnabled(true);
 
         sharedPrefs = getSharedPreferences(FILENAME, 0);
         editor = sharedPrefs.edit();
@@ -57,7 +64,7 @@ public class LoginActivity extends ActionBarActivity {
         passwordET = (EditText) findViewById(R.id.passwordET);
 
 
-        // Button lsitener for signup
+        // Button listener for signup
         Button signupButton = (Button) findViewById(R.id.createNewAccountButton);
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override

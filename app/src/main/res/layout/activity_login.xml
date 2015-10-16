@@ -5,7 +5,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.nikhil.myapplication.LoginActivity"
-    android:background="@android:color/holo_green_light">
+    android:background="@android:color/transparent">
 
 
     <EditText
@@ -18,7 +18,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:hint="Username"
-        android:background="#00ffffff" />
+        android:textIsSelectable="true"
+        android:textColor="#727272" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -33,34 +34,30 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/usernameET"
-        android:layout_alignEnd="@+id/usernameET" />
+        android:layout_alignEnd="@+id/usernameET"
+        android:textColor="#727272" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
         android:id="@+id/loginButton"
-        android:background="@android:color/darker_gray"
+        android:background="#03A9F4"
+        android:onClick="onLoginButtonClick"
+        android:layout_marginTop="105dp"
         android:layout_below="@+id/passwordET"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="38dp"
-        android:layout_alignRight="@+id/passwordET"
-        android:layout_alignEnd="@+id/passwordET"
-        android:onClick="onLoginButtonClick"/>
+        android:layout_alignEnd="@+id/createNewAccountButton" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create New Account"
+        android:text="New Account"
         android:id="@+id/createNewAccountButton"
+        android:background="#03A9F4"
+        android:layout_marginTop="57dp"
         android:layout_below="@+id/loginButton"
-        android:layout_marginTop="71dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/loginButton"
-        android:layout_alignEnd="@+id/loginButton"
-        android:background="@android:color/darker_gray" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
