@@ -18,7 +18,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:hint="Username"
-        android:textIsSelectable="true"
         android:textColor="#727272" />
 
     <EditText
@@ -42,22 +41,24 @@
         android:layout_height="wrap_content"
         android:text="Login"
         android:id="@+id/loginButton"
-        android:background="#03A9F4"
+        android:background="#536DFE"
         android:onClick="onLoginButtonClick"
         android:layout_marginTop="105dp"
         android:layout_below="@+id/passwordET"
         android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/createNewAccountButton" />
+        android:layout_alignEnd="@+id/createNewAccountButton"
+        android:textColor="#FFFFFF" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="New Account"
         android:id="@+id/createNewAccountButton"
-        android:background="#03A9F4"
+        android:background="#536DFE"
         android:layout_marginTop="57dp"
         android:layout_below="@+id/loginButton"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="#FFFFFF" />
 
     <TextView
         android:layout_width="wrap_content"
