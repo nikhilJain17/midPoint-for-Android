@@ -1,5 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+    android:animateLayoutChanges="true"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -38,7 +38,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="onSubmitButtonClick"
-        android:background="#536DFE" />
+        android:background="#536DFE"
+        android:textColor="#FFFFFF" />
 
     <Button
         android:layout_width="60dp"
@@ -48,7 +49,8 @@
         android:background="#536DFE"
         android:id="@+id/button2"
         android:layout_below="@+id/addressEditText"
-        android:layout_alignEnd="@+id/typeEditText" />
+        android:layout_alignEnd="@+id/typeEditText"
+        android:textColor="#FFFFFF" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -60,7 +62,7 @@
         android:layout_above="@+id/submitButton"
         android:background="#ffffff" />
 
-    <ImageView
+    <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
@@ -68,8 +70,10 @@
         android:src="@mipmap/ic_action_new"
         android:onClick="onAddButtonClick"
         android:background="#536DFE"
+        android:text="Add"
         android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/button2" />
+        android:layout_alignEnd="@+id/button2"
+        android:textColor="#FFFFFF"/>
 
 
 

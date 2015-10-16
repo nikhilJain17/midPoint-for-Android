@@ -10,6 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,6 +22,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -33,14 +38,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener {
+public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private GoogleApiClient mGoogleApiClient;
 
     // these are the averages of all the points the user entered
     double midPointLat;
     double midPointLong;
-
+    LatLng midPoint;
 
     // this is the final location (point of interest)
     double poiLat;
@@ -60,6 +66,14 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
 
+        // set up google places api connection
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
 
 
     }
@@ -159,7 +173,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
             // TODO Plot the midpoint and maybe the locations around it too, in a circle
 
             // draw the midpoint
-            LatLng midPoint = new LatLng(midPointLat, midPointLong);
+            midPoint = new LatLng(midPointLat, midPointLong);
             mMap.addMarker(new MarkerOptions().position(midPoint).draggable(false).title("midPoint").icon(BitmapDescriptorFactory.fromResource(R.mipmap.radio_tower))); // draw a radio tower for the midpoint
 
             // TODO Change the icon of the midpoint pls, make a custom one
@@ -183,6 +197,24 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
     }
 
+    // Connection failed while trying to connect to the Google Places Api
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    // connected to the Google Places Api
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    // connection suspended to the google places api
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
 
     /**
      * If the user presses the midpoint, then they can view more detailed info on that place*/
@@ -195,22 +227,43 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         // verify that the user clicked the midpoint
         if (marker.getTitle().equals("midPoint")) {
 
-            // create an intent with the intent of starting the detailsactivity
-
-            Intent intent = new Intent(this, DetailsActivity.class);
-
-            // pass the bundle with the json information
-            Bundle jsonGoodies = new Bundle();
-            jsonGoodies.putString("rawJSON", rootJsonStr);
-
-            intent.putExtra("jsonBundle", jsonGoodies);
-
-            startActivity(intent);
+            launchPlacePicker();
+//            // create an intent with the intent of starting the detailsactivity
+//
+//            Intent intent = new Intent(this, DetailsActivity.class);
+//
+//            // pass the bundle with the json information
+//            Bundle jsonGoodies = new Bundle();
+//            jsonGoodies.putString("rawJSON", rootJsonStr);
+//
+//            intent.putExtra("jsonBundle", jsonGoodies);
+//
+//            startActivity(intent);
         }
 
         return true;
     }
 
+    private void launchPlacePicker() {
+        // set up place picker
+        int PLACE_PICKER_REQUEST = 1;
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+        // TODO: Get radius that user wants to search
+        // For now, just search within 10 latitude units
+        LatLng southwestBoundary = new LatLng(midPoint.latitude - 0.3, midPoint.longitude - 0.3);
+        LatLng northeastBoundary = new LatLng(midPoint.latitude + 0.3, midPoint.longitude + 0.3);
+
+        builder.setLatLngBounds(new LatLngBounds(southwestBoundary, northeastBoundary));
+
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public class PlacesApiTask extends AsyncTask<Void, Void, Void> {
 
