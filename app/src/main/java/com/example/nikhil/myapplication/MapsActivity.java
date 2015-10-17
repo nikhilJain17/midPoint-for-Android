@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -53,6 +54,9 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     double poiLat;
     double poiLong;
 
+    // place id to be used in DetailsActivity
+    // specifically in the Google Places Detail Api
+    String placeId;
 
     // type of place user wants to visit
     String typeOfPlace;
@@ -228,18 +232,19 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         // verify that the user clicked the midpoint
         if (marker.getTitle().equals("midPoint")) {
 
-            launchPlacePicker();
+            // TODO Check if placepicker has been updated with specific places
+            // TODO cause that thing is awesome
+//            launchPlacePicker();
+
 //            // create an intent with the intent of starting the detailsactivity
 //
-//            Intent intent = new Intent(this, DetailsActivity.class);
-//
-//            // pass the bundle with the json information
-//            Bundle jsonGoodies = new Bundle();
-//            jsonGoodies.putString("rawJSON", rootJsonStr);
-//
-//            intent.putExtra("jsonBundle", jsonGoodies);
-//
-//            startActivity(intent);
+            Intent intent = new Intent(this, DetailsActivity.class);
+
+            Bundle datum = new Bundle();
+            datum.putString("place_id", placeId);
+            intent.putExtra("datum", datum);
+
+            startActivity(intent);
         }
 
         return true;
@@ -310,14 +315,15 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
     public class PlacesApiTask extends AsyncTask<Void, Void, Void> {
 
+
+        String unparsedJSON = null;
+
         @Override
         protected Void doInBackground(Void... params) {
 
             // Connect to the API and consume it (viciously)
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
-
-            String unparsedJSON = null;
 
 
             try {
@@ -383,12 +389,31 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
             }
 
+            // parse the JSON for the place id
+            getPlaceId();
+
             return null;
 
         } // end of doInBackground
 
 
-        // parse the JSON data and put it in a bundle ready to be passed on to DetailInfoActivity
+        private void getPlaceId() {
+
+
+            // parse the JSON data and put it in a bundle ready to be passed on to DetailInfoActivity
+            // Only get the place_id, the places details will be handled in the DetailsActivity
+            try {
+                JSONObject rootJson = new JSONObject(unparsedJSON);
+                JSONArray resultsArray = rootJson.getJSONArray("results");
+                JSONObject firstResult = resultsArray.getJSONObject(1);
+                placeId = firstResult.getString("place_id");
+                Log.d("Place ID: ", placeId);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } // end of getPlaceId
 
     } // end of class PlacesApiTask
 
