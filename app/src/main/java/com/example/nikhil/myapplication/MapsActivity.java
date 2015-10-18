@@ -192,7 +192,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(midPoint, 14, 0, 0)));
 
 
-            // Connect to the Google Places API and get back some JSON data
+            // Connect to the Google Places API and get back the place_id
             PlacesApiTask task = new PlacesApiTask();
             task.execute();
 

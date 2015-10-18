@@ -1,11 +1,15 @@
 package com.example.nikhil.myapplication;
 
+import android.app.ActionBar;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,16 +38,30 @@ public class DetailsActivity extends ActionBarActivity {
     String name;
     String url;
     int numOfReviews;
-    ArrayList<String> reviewsArray;
     String status;
 
     // Gui References
     TextView nameTV, addressTV, phoneNumberTV;
+    ListView reviewListView;
+
+    ArrayAdapter<String> mAdapter;
+    ArrayList<String> reviewTextArray; // to be shown on a dialog fragment
+    ArrayList<String> ratingsArray; // to be displayed
+
+
+    /*
+    TODO IMPLEMENT AN EXPANDABLE LISTVIEW TO DISPLAY REVIEWS!!!!!!!!
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        // make action bar blue
+        android.support.v7.app.ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setBackgroundDrawable(new ColorDrawable(0xff536DFE));
+
 
         // get the gui elements
         nameTV = (TextView) findViewById(R.id.nameTV);
@@ -63,22 +81,18 @@ public class DetailsActivity extends ActionBarActivity {
         DetailsApiTask apiTask = new DetailsApiTask();
         apiTask.execute();
 
-        // display the api results on the screen
-        displayApiData();
+
+        // set up list view components
+        reviewListView = (ListView) findViewById(R.id.reviewListView);
+        reviewTextArray = new ArrayList<>();
+
+
 
     } // end of onCreate
 
 
     // does exactly what it sounds like it does
-    private void displayApiData() {
 
-        nameTV.setText(name);
-        addressTV.setText(formatted_address);
-        phoneNumberTV.setText(formatted_phone_number);
-
-        Toast.makeText(this, status, Toast.LENGTH_SHORT).show();//.setGravity(20, 50, 50);
-
-    }
 
 
     // TODO implement later if placepicker gets updated with specific types of places
@@ -209,9 +223,30 @@ public class DetailsActivity extends ActionBarActivity {
             name = result.getString("name");
             status = rootJson.getString("status");
 
+            JSONArray reviews = rootJson.getJSONArray("reviews");
+
+            // if there is stuff inside it, then get stuff
+            if (reviews.length() > 0) {
+
+                for (int i = 0; i < reviews.length(); i++) {
+
+                    JSONObject review = reviews.getJSONObject(i);
+
+                    int rating = review.getInt("rating");
+                    String text = review.getString("text");
+                    String author_name = review.getString("author_name");
+
+                    ratingsArray.add(Integer.toString(rating));
+                    reviewTextArray.add(text + " ~" + author_name);
+
+                } // end of for
+
+            } // end of if
+
         } // end of parseJson
 
 
+        // Display the API data on the screen
         @Override
         protected void onPostExecute(Void aVoid) {
 
