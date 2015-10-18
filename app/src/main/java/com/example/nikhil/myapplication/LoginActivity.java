@@ -1,10 +1,13 @@
 package com.example.nikhil.myapplication;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
+import android.os.Looper;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -176,46 +179,75 @@ public class LoginActivity extends ActionBarActivity {
             });
 
 
-        // listen for a failure
-        mSocket.on("login fail", new Emitter.Listener() {
+        new Thread(new Runnable() {
             @Override
-            public void call(Object... args) {
+            public void run() {
 
 
-                // TODO Add a display or something..a.wertaw/e we wj
+                // listen for a failure
+                mSocket.on("login fail", new Emitter.Listener() {
+                    @Override
+                    public void call(Object... args) {
 
 
-                Log.d("LOGIN", "Failure");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Invalid Login", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-            }
-        });
+
+
+
+                        Log.d("LOGIN", "Failure");
+
+                    }
+                }); // end of mSocket.on("login fail")
+
+            } // end of run
+
+        }).start(); // end of anonymous thread class
 
 
 
     } // end of onLoginButtonClick()
 
 
+    class Login extends AsyncTask<Void, Void, Void> {
 
+        @Override
+        protected Void doInBackground(Void... params) {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
+            Looper.prepare();
+            Toast.makeText(getApplicationContext(), "Invalid Login", Toast.LENGTH_SHORT).show();
+            return null;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+    } // end of DisplayErr
+
+
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_login, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 }

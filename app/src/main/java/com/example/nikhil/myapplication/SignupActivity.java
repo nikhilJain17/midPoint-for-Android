@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.net.URISyntaxException;
 
@@ -102,8 +103,15 @@ public class SignupActivity extends ActionBarActivity {
             mSocket.on("sign up success", new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
-                    // TODO Display a success message
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Created account successfully!", Toast.LENGTH_SHORT).show();
+                        } // end of run
+                    }); // end of runOnUiThread
                     Log.d("Create Account", "YES");
+
                 }
             });
 
@@ -113,7 +121,13 @@ public class SignupActivity extends ActionBarActivity {
                 @Override
                 public void call(Object... args) {
 
-                    // TODO create a display for this message
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Sorry, username in use", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                     Log.d("Signup", "signup in use");
                     suInUse = true;
 
