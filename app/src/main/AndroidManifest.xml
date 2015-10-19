@@ -55,24 +55,7 @@
         <activity
             android:name=".DetailsActivity"
             android:label="@string/title_activity_details"
-            android:parentActivityName=".MapsActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.nikhil.myapplication.MapsActivity" />
-        </activity>
-        <!-- <activity -->
-        <!-- android:name=".TestAd" -->
-        <!-- android:label="@string/title_activity_test_ad" > -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
-
-
-        <!-- Include the AdActivity configChanges and theme. -->
+        />
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"

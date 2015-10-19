@@ -50,12 +50,15 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     double midPointLong;
     LatLng midPoint;
 
-    // this is the final location (point of interest)
-    double poiLat;
-    double poiLong;
+    // these are the places of interests and its coordinates
+    ArrayList<Double> poiLatArray;
+    ArrayList<Double> poiLongArray;
+
+    int numOfUserLocations; // how many places the user entered (addresses)
 
     // place id to be used in DetailsActivity
     // specifically in the Google Places Detail Api
+    ArrayList<String> placeIdArray;
     String placeId;
 
     // type of place user wants to visit
@@ -70,6 +73,11 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
+        placeIdArray = new ArrayList<>();
+
+        poiLatArray = new ArrayList<>();
+        poiLongArray = new ArrayList<>();
 
         // set up google places api connection
         mGoogleApiClient = new GoogleApiClient
@@ -96,6 +104,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         double[] doble = bundle.getDoubleArray("positions");
         ArrayList<String> namesList = bundle.getStringArrayList("place_names");
         typeOfPlace = bundle.getString("type");
+
+        numOfUserLocations = namesList.size();
 
 
         int namesListIndex = 0; // for naming the points plotted on the map
@@ -146,8 +156,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                         String title = namesList.get(namesListIndex);
                         Log.d("Title for point: ", title);
 
-
-                        mMap.addMarker(new MarkerOptions().position(plotter).title(title));
+                        // add marker for places mallu entered
+                        mMap.addMarker(new MarkerOptions().position(plotter).title(title).icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_variant)));
 
                         namesListIndex++;
 
@@ -192,9 +202,11 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(midPoint, 14, 0, 0)));
 
 
-            // Connect to the Google Places API and get back the place_id
+            // Connect to the Google Places API and get back the place_ids for each place
+            // this also plots the surrounding pois, not just one
             PlacesApiTask task = new PlacesApiTask();
             task.execute();
+
 
 
         }
@@ -229,23 +241,53 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         // display the name of the place
         marker.showInfoWindow();
 
-        // verify that the user clicked the midpoint
-        if (marker.getTitle().equals("midPoint")) {
+        // 0 to M are all the id's of the user's location inputs, where M is the last input
+        // M + 1 is the id of the midpoint
+        // M + 2 to P are the ids of the places
+        // that is what we want
 
-            // TODO Check if placepicker has been updated with specific places
-            // TODO cause that thing is awesome
-//            launchPlacePicker();
+        // marker ids are m0, m1, m8... etc
+        String markerId = marker.getId();
+        markerId = markerId.replace("m", ""); // get rid of the m
+        int markerNum = Integer.parseInt(markerId);
 
-//            // create an intent with the intent of starting the detailsactivity
-//
+        // indeed, the thing the user clicked on is in fact a place of interest
+        // TODO numOfUserLocations + 1????
+        if (markerNum > numOfUserLocations + 1) {
+
+            // launch detailsactivity with the appropriate place_id from the arraylist
+            // like bruh
             Intent intent = new Intent(this, DetailsActivity.class);
 
             Bundle datum = new Bundle();
-            datum.putString("place_id", placeId);
+            String placeIdToSend = placeIdArray.get(markerNum - numOfUserLocations - 1);
+            Log.d("Place_ID sending: ", placeIdToSend);
+            datum.putString("place_id", placeIdToSend);
+
             intent.putExtra("datum", datum);
 
             startActivity(intent);
+
         }
+
+//
+//        // verify that the user clicked the midpoint
+//        if (marker.getTitle().equals("midPoint")) {
+//
+//            // TODO Check if placepicker has been updated with specific places
+//            // TODO cause that thing is awesome
+////            launchPlacePicker();
+//
+////            // create an intent with the intent of starting the detailsactivity
+////
+//            Intent intent = new Intent(this, DetailsActivity.class);
+//
+//            Bundle datum = new Bundle();
+//            datum.putString("place_id", placeId);
+//            intent.putExtra("datum", datum);
+//
+//            startActivity(intent);
+//        }
 
         return true;
     }
@@ -392,9 +434,59 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
             // parse the JSON for the place id
             getPlaceId();
 
+            // get the lats and longs to plot on the map of ALL the places of interest
+            getLatLongs();
+
             return null;
 
         } // end of doInBackground
+
+
+        private void getLatLongs() {
+
+            try {
+                JSONObject rootJson = new JSONObject(unparsedJSON);
+                JSONArray resultsArray = rootJson.getJSONArray("results");
+
+                // iterate through the array
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject result = resultsArray.getJSONObject(i);
+                    JSONObject geometry = result.getJSONObject("geometry");
+                    JSONObject location = geometry.getJSONObject("location");
+
+                    final String name = result.getString("name");
+                    final double lat = location.getDouble("lat");
+                    final double lng = location.getDouble("lng");
+
+                    // store the coordinates BAAACK TO BAACK
+                    poiLatArray.add(i, lat);
+                    poiLatArray.add(i, lng);
+
+
+                    // plot that cheese on the maaaap
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+
+                            mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(name)).showInfoWindow();
+
+                        } // end of run
+                    }); // end of runOnUiThread
+
+
+
+
+                } // end of for loop in results array
+
+
+
+            } // end of try
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } // end of getLatLongs()
 
 
         private void getPlaceId() {
@@ -405,9 +497,14 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
             try {
                 JSONObject rootJson = new JSONObject(unparsedJSON);
                 JSONArray resultsArray = rootJson.getJSONArray("results");
-                JSONObject firstResult = resultsArray.getJSONObject(1);
-                placeId = firstResult.getString("place_id");
-                Log.d("Place ID: ", placeId);
+
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject result = resultsArray.getJSONObject(i);
+                    placeId = result.getString("place_id");
+                    Log.d("Place ID: ", placeId);
+
+                    placeIdArray.add(i, placeId); // push to the arraylist
+                }
             }
             catch (Exception e) {
                 e.printStackTrace();
