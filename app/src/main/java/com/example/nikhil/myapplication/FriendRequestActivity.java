@@ -133,9 +133,10 @@ public class FriendRequestActivity extends ActionBarActivity {
 
                         // who sent the request
                         String theirName = friendRequests.get(pos);
+                        theirName = theirName.replace(" would like to be friends.", ""); // delete that extra stuff
 
 //                        Toast.makeText(getApplicationContext(), theirName, Toast.LENGTH_SHORT).show();
-                        Log.d("Accept request", theirName);
+                        Log.d("Accepted request from ", theirName);
 
                         // emit the accept request event
                         mSocket.emit("accept friend request", username, theirName);

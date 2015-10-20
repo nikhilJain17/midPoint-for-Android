@@ -49,6 +49,13 @@ public class FriendsActivity extends ActionBarActivity {
 
         friends = new ArrayList<String>();
 
+
+        adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, friends);
+
+        friendsListView.setAdapter(adapter);
+
+
         // CONNECT TO SERVER
         try {
             mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
@@ -57,7 +64,7 @@ public class FriendsActivity extends ActionBarActivity {
 //            Toast.makeText(this, username, Toast.LENGTH_SHORT).show();
 
             extractFriends();
-            displayFriends();
+            adapter.notifyDataSetChanged();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -103,13 +110,6 @@ public class FriendsActivity extends ActionBarActivity {
     } // end of extract friends
 
 
-    // display the friends
-    private void displayFriends() {
-        adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, friends);
-
-        friendsListView.setAdapter(adapter);
-    }
 
 
 
