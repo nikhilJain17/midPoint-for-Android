@@ -1,5 +1,6 @@
 package com.example.nikhil.myapplication;
 
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -38,7 +39,7 @@ public class SignupActivity extends ActionBarActivity {
         // style action bar
 
         ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setBackgroundDrawable(new ColorDrawable(0xff536DFE));
+        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00BCD4")));
 
         suInUse = false;
 
@@ -59,6 +60,14 @@ public class SignupActivity extends ActionBarActivity {
             public void onClick(View v) {
 
                 try {
+
+                    if (usernameET.getText().length() < 6)
+                        Toast.makeText(getApplicationContext(), "Username must be longer than 6 letters", Toast.LENGTH_SHORT).show();
+
+                    // TODO how to verify address??? geocode...
+                    if (addressET.getText().length() == 0)
+                        Toast.makeText(getApplicationContext(), "Invalid address", Toast.LENGTH_SHORT).show();
+
                     signUp();
                 }
                 catch (URISyntaxException e) {
@@ -88,8 +97,6 @@ public class SignupActivity extends ActionBarActivity {
 
         // confirm the password is the same in both text fields
         if (password.equals(passwordConfirm)) {
-
-            // TODO Make sure that usernames are not repeated!
 
             // send the goods to the server
             Socket mSocket;

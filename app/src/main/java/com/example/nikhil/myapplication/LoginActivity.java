@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Looper;
@@ -56,7 +57,7 @@ public class LoginActivity extends ActionBarActivity {
 
         // style the action bar
         ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setBackgroundDrawable(new ColorDrawable(0xff536DFE));
+        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00BCD4")));
 //        mActionBar.setDisplayShowTitleEnabled(false);
 //        mActionBar.setDisplayShowTitleEnabled(true);
 
