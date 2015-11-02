@@ -1,7 +1,11 @@
 package com.example.nikhil.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
@@ -211,6 +215,35 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
         }
 
+
+    }
+
+    // get user location
+    private LatLng getUserLocation(){
+
+        String towers;
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        towers = lm.getBestProvider(criteria, false);
+
+        Location userLocation = lm.getLastKnownLocation(towers);
+
+        if (userLocation != null) {
+
+            String lat = Double.toString(userLocation.getLatitude());
+            String longd = Double.toString(userLocation.getLongitude());
+
+            Log.d("User's Location: ", "Lat: " + lat + " Long: " + longd);
+
+            return new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+
+        }
+
+        else
+            Log.d("User Location", "Failed to get user's location");
+
+        return null;
 
     }
 
