@@ -429,6 +429,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                     return null;
                 }
 
+
+
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
                 String line;
@@ -440,6 +442,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 unparsedJSON = buffer.toString();
                 rootJsonStr = unparsedJSON;
                 Log.d("Raw JSON", unparsedJSON);
+
+                // Check if raw json indicates there are zero results
 
             }
 
