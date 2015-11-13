@@ -88,7 +88,8 @@
         android:background="@drawable/small_add_friend"
         android:layout_below="@+id/addButton"
         android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/addButton" />
+        android:layout_alignStart="@+id/addButton"
+        android:onClick="onAddFriendButtonClick"/>
         <!--android:layout_alignBottom="@id/addLocationButton"-->
 
 
