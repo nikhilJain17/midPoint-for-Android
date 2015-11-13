@@ -410,7 +410,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 String location = Double.toString(midPointLat) + "," + Double.toString(midPointLong);
                 String types = "&types=" + typeOfPlace;
                 // TODO Add a slider to allow the user to choose the radius they want to search in
-                String KEY = "&rankby=distance&key=AIzaSyDYQAZn43BK_TUtIy1OhDn95Vb4R2OFmVg";
+                String KEY = "&rankby=distance&key=ENZ_ECET11";
 
                 String URLstring = baseURL + location + types + KEY;
 
