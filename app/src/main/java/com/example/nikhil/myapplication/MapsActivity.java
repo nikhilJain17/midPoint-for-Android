@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -409,7 +410,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 String location = Double.toString(midPointLat) + "," + Double.toString(midPointLong);
                 String types = "&types=" + typeOfPlace;
                 // TODO Add a slider to allow the user to choose the radius they want to search in
-                String KEY = "&rankby=distance&key=AIzaSyBi8Ybo_2QPTKc9CBd3C7yJrleiqUDiQtY";
+                String KEY = "&rankby=distance&key=AIzaSyDYQAZn43BK_TUtIy1OhDn95Vb4R2OFmVg";
 
                 String URLstring = baseURL + location + types + KEY;
 
@@ -443,7 +444,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 rootJsonStr = unparsedJSON;
                 Log.d("Raw JSON", unparsedJSON);
 
-                // Check if raw json indicates there are zero results
+
 
             }
 
@@ -525,8 +526,127 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
         } // end of getLatLongs()
 
+        // Check if over query limit for web service
+        private void overQueryLimit() {
+
+            try {
+                JSONObject rootJson = new JSONObject(unparsedJSON);
+                String err = rootJson.getString("status");
+                Log.d("Status: ", err);
+
+                if (err.equals("OVER_QUERY_LIMIT")) {
+                    // DISPLAY ERROR MESSAGE ON SCREEN in new thread
+
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MapsActivity.this, "Over API query limit! Error 100", Toast.LENGTH_SHORT).show();
+                                    TextView view = (TextView) findViewById(R.id.mapInfoTV);
+                                    view.setText(view.getText().toString() + "\nOver API query limit! Error 100");
+                                }
+                            });
+                        }
+                    }).start(); // end of new Thread
+
+                } // end of if
+
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+        // check if request was invalid
+        private void invalidRequest() {
+
+            try {
+                JSONObject rootJson = new JSONObject(unparsedJSON);
+                String err = rootJson.getString("status");
+                Log.d("Status: ", err);
+
+                if (err.equals("INVALID_REQUEST")) {
+                    // DISPLAY ERROR MESSAGE ON SCREEN in new thread
+
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MapsActivity.this, "Invalid request! Try modifying your search", Toast.LENGTH_SHORT).show();
+                                    TextView view = (TextView) findViewById(R.id.mapInfoTV);
+                                    view.setText(view.getText().toString() + "\nInvalid request! Try modifying your search");
+                                }
+                            });
+                        }
+                    }).start(); // end of new Thread
+
+                } // end of if
+
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+
+
+        // Check if raw json indicates there are zero results
+        private void zeroResults() {
+
+            boolean isZeroResults = false;
+
+            try {
+                JSONObject rootJson = new JSONObject(unparsedJSON);
+                String err = rootJson.getString("status");
+                Log.d("Status: ", err);
+
+                if (err.equals("ZERO_RESULTS")) {
+                    // DISPLAY ERROR MESSAGE ON SCREEN in new thread
+                    isZeroResults = true;
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MapsActivity.this, "Sorry, no results =(", Toast.LENGTH_SHORT).show();
+                                    TextView view = (TextView) findViewById(R.id.mapInfoTV);
+                                    view.setText(view.getText().toString() + "\nSorry, no results found.");
+                                }
+                            });
+                        }
+                    }).start(); // end of new Thread
+
+                } // end of if
+
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+//            return isZeroResults;
+
+        } // end of zeroResults
+
 
         private void getPlaceId() {
+
+            // check if there are zero results from the api call and handle it
+            zeroResults();
+
+            // check if we are over teh query limit
+            overQueryLimit();
 
 
             // parse the JSON data and put it in a bundle ready to be passed on to DetailInfoActivity

@@ -1,15 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:id="@+id/map"
+        tools:context="com.example.nikhil.myapplication.MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/mapInfoTV"
+            android:text="Tap the points for more info"
+            android:textSize="15sp"
+            android:textColor="#FFFFFF"/>
 
 
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:id="@+id/map"
-    tools:context="com.example.nikhil.myapplication.MapsActivity"
-    android:name="com.google.android.gms.maps.SupportMapFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tap the midpoint for more info"/>
-
-</fragment>
-
+    </fragment>
+</RelativeLayout>

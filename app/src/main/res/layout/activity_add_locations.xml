@@ -37,21 +37,18 @@
         android:background="@drawable/roundedbutton"
         android:textColor="#7f7f7f"
         android:layout_below="@+id/typeEditText"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="32dp" />
+        android:layout_alignParentStart="true" />
 
     <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:onClick="onClearButtonClick"
         android:src="@drawable/small_delete"
         android:id="@+id/button2"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_alignBottom="@+id/submitButton"
-        android:layout_alignStart="@+id/addLocationButton"
-        android:layout_below="@+id/addLocationButton"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignBottom="@+id/addLocationButton"
+        android:layout_alignEnd="@+id/typeEditText" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -64,8 +61,8 @@
         android:layout_below="@+id/button2" />
 
     <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/addButton"
         android:src="@drawable/small_add"
         android:onClick="onAddButtonClick"
@@ -75,15 +72,25 @@
         android:layout_alignBottom="@+id/addressEditText" />
 
     <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/addLocationButton"
         android:onClick="onYourLocationButtonClick"
         android:src="@drawable/small_user_location"
         android:textColor="#FFFFFF"
+        android:layout_below="@+id/typeEditText"
+        android:layout_alignStart="@+id/addButton" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/addFriendLocationButton"
+        android:background="@drawable/small_add_friend"
+        android:layout_below="@+id/addButton"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/typeEditText"
-        android:layout_alignBottom="@+id/typeEditText" />
+        android:layout_alignStart="@+id/addButton" />
+        <!--android:layout_alignBottom="@id/addLocationButton"-->
+
 
 
 </RelativeLayout>

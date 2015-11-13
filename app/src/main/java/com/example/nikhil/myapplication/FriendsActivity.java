@@ -72,6 +72,45 @@ public class FriendsActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // TODO is this code relevant
+        setContentView(R.layout.activity_friends);
+
+        // sharedprefs
+        sharedPrefs = getSharedPreferences(FILENAME, 0);
+        username = sharedPrefs.getString("username", "ERROR");
+
+        // listview stuff
+        friendsListView = (ListView) findViewById(R.id.friendLV);
+
+        friends = new ArrayList<String>();
+
+
+        adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, friends);
+
+        friendsListView.setAdapter(adapter);
+
+
+        // CONNECT TO SERVER
+        try {
+            mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
+            mSocket.connect();
+
+//            Toast.makeText(this, username, Toast.LENGTH_SHORT).show();
+
+            extractFriends();
+            adapter.notifyDataSetChanged();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 
     // access the friend data
