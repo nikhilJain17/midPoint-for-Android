@@ -59,7 +59,7 @@
         android:inputType="textPostalAddress"
         android:ems="10"
         android:id="@+id/addressET"
-        android:hint="(Optional) Frequently Used Address"
+        android:hint="Frequently Used Address"
         android:textColor="#727272"
         android:layout_below="@+id/passwordConfirmET"
         android:layout_alignParentStart="true"
@@ -76,6 +76,17 @@
         android:layout_below="@+id/addressET"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:id="@+id/phoneNumET"
+        android:layout_below="@+id/addressET"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/addressET"
+        android:hint="Phone Number" />
 
 
 </RelativeLayout>

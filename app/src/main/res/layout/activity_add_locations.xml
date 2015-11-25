@@ -18,7 +18,7 @@
         android:layout_toStartOf="@+id/addButton" />
 
     <EditText
-        android:hint="Type of place (theater, etc)"
+        android:hint="Type of place (restaurant, etc)"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/typeEditText"

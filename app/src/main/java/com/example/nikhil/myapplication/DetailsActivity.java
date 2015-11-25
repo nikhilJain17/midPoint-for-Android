@@ -151,7 +151,7 @@ public class DetailsActivity extends ActionBarActivity {
             try {
                 // construct the url
                 String baseUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + placeId;
-                String key = "&key=ENZ_ECET11";
+                String key = "&key=AIzaSyDYQAZn43BK_TUtIy1OhDn95Vb4R2OFmVg";
                 URL url = new URL(baseUrl + key);
 
                 // connect to the api
