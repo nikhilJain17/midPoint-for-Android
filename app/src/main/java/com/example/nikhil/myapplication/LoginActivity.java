@@ -58,7 +58,7 @@ public class LoginActivity extends ActionBarActivity {
 
         // style the action bar
         ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00838F")));
+        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2196F3")));
 //        mActionBar.setDisplayShowTitleEnabled(false);
 //        mActionBar.setDisplayShowTitleEnabled(true);
 

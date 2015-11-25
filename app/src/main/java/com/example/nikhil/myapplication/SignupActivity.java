@@ -40,7 +40,7 @@ public class SignupActivity extends ActionBarActivity {
         // style action bar
 
         ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00BCD4")));
+        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2196F3")));
 
         suInUse = false;
 
