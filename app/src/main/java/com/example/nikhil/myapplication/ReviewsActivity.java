@@ -20,7 +20,7 @@ public class ReviewsActivity extends ActionBarActivity {
     ExpandableListView reviewListView; // to hold the reviews fam
     ExpandableListAdapter reviewListAdapter;
     List reviewListTitle;
-    HashMap reviewListDetail;
+    HashMap <String, List<String>> reviewListDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +32,22 @@ public class ReviewsActivity extends ActionBarActivity {
 
         reviewListDetail = new HashMap();
         // some dummy data
-        reviewListDetail.put("first","Hello World!");
-        reviewListDetail.put("second","Goodbye World!");
+        List<String> first = new ArrayList<>();
+        first.add("Hello World");
+        first.add("Hello World");
+        first.add("Hello World");
+        List<String> second = new ArrayList<>();
+        second.add("Hello World");
+        second.add("Hello World");
+        second.add("Hello World");
+        reviewListDetail.put("first", first);
+        reviewListDetail.put("second", second);
 
         // init the titles to be the keys of the hashmap
         reviewListTitle = new ArrayList(reviewListDetail.keySet());
+
+        // init the adapter
+        reviewListAdapter = new ReviewsExpandableListAdapter(getApplicationContext(), reviewListTitle, reviewListDetail);
 
         // attach the adapter
         reviewListView.setAdapter(reviewListAdapter);
@@ -49,8 +60,12 @@ public class ReviewsActivity extends ActionBarActivity {
             }
         });
 
-
-        reviewListView
+        reviewListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                Toast.makeText(getApplicationContext(), reviewListTitle.get(groupPosition) + " List Collapsed.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     } // end of oncreate
