@@ -42,7 +42,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/adView"
         android:padding="10dp"
-        android:textColor="#727272" />
+        android:textColor="#4f4f4f" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
         android:layout_below="@+id/addressTV"
         android:layout_alignEnd="@+id/addressTV"
         android:padding="10dp"
-        android:textColor="#727272" />
+        android:textColor="#4f4f4f" />
 
     <TextView
         android:layout_width="wrap_content"

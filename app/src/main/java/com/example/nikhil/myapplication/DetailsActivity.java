@@ -91,6 +91,7 @@ public class DetailsActivity extends ActionBarActivity {
                 // testing passing it directly
                 intent.putExtra("text_reviews", reviewTextArr);
                 intent.putExtra("rating_reviews", reviewRatingArr);
+                intent.putExtra("author_reviews", reviewAuthorArr);
                 intent.putExtra("data",data);
 
                 // TEST DO NOT READ
