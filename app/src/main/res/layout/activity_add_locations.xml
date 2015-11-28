@@ -23,10 +23,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/typeEditText"
         android:layout_below="@+id/addressEditText"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="0dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/addressEditText" />
+        android:layout_toStartOf="@+id/submitButton" />
 
     <Button
         android:layout_width="wrap_content"
@@ -35,20 +35,20 @@
         android:id="@+id/submitButton"
         android:onClick="onSubmitButtonClick"
         android:background="@drawable/roundedbutton"
-        android:textColor="#7f7f7f"
-        android:layout_below="@+id/typeEditText"
-        android:layout_alignParentStart="true" />
+        android:textColor="#0d47a1"
+        android:layout_alignBottom="@+id/typeEditText"
+        android:layout_alignStart="@+id/button2" />
 
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:onClick="onClearButtonClick"
-        android:src="@drawable/small_delete"
+        android:src="@drawable/newdelete"
         android:id="@+id/button2"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_alignBottom="@+id/addLocationButton"
-        android:layout_alignEnd="@+id/typeEditText" />
+        android:layout_above="@+id/listView"
+        android:layout_alignEnd="@+id/listView" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -58,13 +58,13 @@
         android:smoothScrollbar="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/button2" />
+        android:layout_below="@+id/addLocationButton" />
 
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/addButton"
-        android:src="@drawable/small_add"
+        android:src="@drawable/newadd"
         android:onClick="onAddButtonClick"
         android:textColor="#FFFFFF"
         android:layout_alignParentTop="true"
@@ -76,20 +76,19 @@
         android:layout_height="50dp"
         android:id="@+id/addLocationButton"
         android:onClick="onYourLocationButtonClick"
-        android:src="@drawable/small_user_location"
+        android:src="@drawable/newlocation"
         android:textColor="#FFFFFF"
-        android:layout_below="@+id/typeEditText"
-        android:layout_alignStart="@+id/addButton" />
+        android:layout_below="@+id/submitButton"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/addFriendLocationButton"
-        android:background="@drawable/small_add_friend"
-        android:layout_below="@+id/addButton"
-        android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/addButton"
-        android:onClick="onAddFriendButtonClick"/>
+        android:background="@drawable/newfriends"
+        android:onClick="onAddFriendButtonClick"
+        android:layout_above="@+id/listView"
+        android:layout_alignStart="@+id/listView" />
         <!--android:layout_alignBottom="@id/addLocationButton"-->
 
 

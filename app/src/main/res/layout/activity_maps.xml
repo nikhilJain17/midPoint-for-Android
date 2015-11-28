@@ -14,7 +14,7 @@
             android:id="@+id/mapInfoTV"
             android:text="Tap the points for more info"
             android:textSize="15sp"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#0d47a1"/>
 
 
 

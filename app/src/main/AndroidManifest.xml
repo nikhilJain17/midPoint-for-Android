@@ -54,8 +54,7 @@
         </activity>
         <activity
             android:name=".DetailsActivity"
-            android:label="@string/title_activity_details"
-        />
+            android:label="@string/title_activity_details" />
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
@@ -109,6 +108,8 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nikhil.myapplication.UserProfileOverviewActivity" />
+        </activity>
+        <activity android:name=".ReviewsActivity" >
         </activity>
     </application>
 

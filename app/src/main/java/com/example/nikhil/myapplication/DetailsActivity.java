@@ -1,6 +1,7 @@
 package com.example.nikhil.myapplication;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -8,7 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,17 +39,19 @@ public class DetailsActivity extends ActionBarActivity {
     String formatted_address;
     String formatted_phone_number;
     String name;
-    String url;
-    int numOfReviews;
+//    String url;
+//    int numOfReviews;
     String status;
+    String hours;
 
     // Gui References
-    TextView nameTV, addressTV, phoneNumberTV;
-    ListView reviewListView;
+    TextView nameTV, addressTV, phoneNumberTV, hoursTV;
+    Button reviewButton;
 
-    ArrayAdapter<String> mAdapter;
-    ArrayList<String> reviewTextArray; // to be shown on a dialog fragment
-    ArrayList<String> ratingsArray; // to be displayed
+    // Since Bundles can only take 1-dimensional arrays, there have to be 3 separate forking arrays
+    String[] reviewTextArr;
+    String[] reviewAuthorArr;
+    String[] reviewRatingArr;
 
 
     /*
@@ -67,6 +72,25 @@ public class DetailsActivity extends ActionBarActivity {
         nameTV = (TextView) findViewById(R.id.nameTV);
         addressTV = (TextView) findViewById(R.id.addressTV);
         phoneNumberTV = (TextView) findViewById(R.id.phoneNumberTV);
+        hoursTV = (TextView) findViewById(R.id.hoursTV);
+
+        reviewButton = (Button) findViewById(R.id.reviewsButton);
+        reviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle data = new Bundle();
+
+                data.putStringArray("author_reviews", reviewAuthorArr);
+                data.putStringArray("text_reviews", reviewTextArr);
+                data.putStringArray("rating_reviews", reviewRatingArr);
+
+                Intent intent = new Intent(getApplicationContext(), ReviewsActivity.class);
+                intent.putExtra("data",data);
+                startActivity(intent);
+
+            }
+        });
 
         // Display the ad via AdMob
         AdView adView = (AdView) findViewById(R.id.adView);
@@ -82,19 +106,10 @@ public class DetailsActivity extends ActionBarActivity {
         apiTask.execute();
 
 
-        // set up list view components
-        reviewListView = (ListView) findViewById(R.id.reviewListView);
-        reviewTextArray = new ArrayList<>();
-
-
-
     } // end of onCreate
 
 
     // does exactly what it sounds like it does
-
-
-
     // TODO implement later if placepicker gets updated with specific types of places
     private void getPlacePickerBundleData() {
 
@@ -152,6 +167,9 @@ public class DetailsActivity extends ActionBarActivity {
                 // construct the url
                 String baseUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + placeId;
                 String key = "&key=AIzaSyDYQAZn43BK_TUtIy1OhDn95Vb4R2OFmVg";
+
+                Log.d("DetailsActivity",baseUrl+key);
+
                 URL url = new URL(baseUrl + key);
 
                 // connect to the api
@@ -216,6 +234,8 @@ public class DetailsActivity extends ActionBarActivity {
 
         private void parseJson() throws JSONException{
 
+            hours = "";
+
             JSONObject rootJson = new JSONObject(rawJson);
             JSONObject result = rootJson.getJSONObject("result");
             formatted_address = result.getString("formatted_address");
@@ -223,25 +243,48 @@ public class DetailsActivity extends ActionBarActivity {
             name = result.getString("name");
             status = rootJson.getString("status");
 
+            JSONArray openHours = result.getJSONObject("opening_hours").getJSONArray("weekday_text");
+
+            for (int i = 0; i < openHours.length(); i++) {
+                hours += openHours.getString(i);
+                hours += "\n"; // NEWLINE NEWLINE NEWLINE
+            }
+
+
             JSONArray reviews = rootJson.getJSONArray("reviews");
 
             // if there is stuff inside it, then get stuff
             if (reviews.length() > 0) {
 
+                // Holds author name, text of review, and rating out of 5 (e.g. 4/5, dick/5, etc)
+                reviewAuthorArr = new String[reviews.length()];
+                reviewRatingArr = new String[reviews.length()];
+                reviewTextArr = new String[reviews.length()];
+
+                Log.i("DetailsActivity", "Getting Reviews");
+
                 for (int i = 0; i < reviews.length(); i++) {
 
                     JSONObject review = reviews.getJSONObject(i);
 
-                    int rating = review.getInt("rating");
+                    String rating = review.getString("rating");
                     String text = review.getString("text");
                     String author_name = review.getString("author_name");
 
-                    ratingsArray.add(Integer.toString(rating));
-                    reviewTextArray.add(text + " ~" + author_name);
+
+                    reviewRatingArr[i] = rating;
+                    reviewTextArr[i] = text;
+                    reviewAuthorArr[i] = author_name;
 
                 } // end of for
 
             } // end of if
+
+            else {
+                Log.i("DetailsActivity", "NO Reviews!");
+            }
+
+
 
         } // end of parseJson
 
@@ -253,6 +296,14 @@ public class DetailsActivity extends ActionBarActivity {
             nameTV.setText(name);
             addressTV.setText(formatted_address);
             phoneNumberTV.setText(formatted_phone_number);
+            hoursTV.setText(hours);
+
+
+//            if (openNow.contains("False"))
+//                openNowTV.setText("Not Currently Open");
+//
+//            else if (openNow.contains("True"))
+//                openNowTV.setText("Currently Open");
 
         }
     } // end of DetailsApiTask

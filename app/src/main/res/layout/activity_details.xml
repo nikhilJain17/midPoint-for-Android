@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Name"
+        android:text=""
         android:id="@+id/nameTV"
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/adView"
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Address"
+        android:text=""
         android:id="@+id/addressTV"
         android:layout_below="@+id/nameTV"
         android:layout_alignParentStart="true"
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Phone Number"
+        android:text=""
         android:id="@+id/phoneNumberTV"
         android:layout_alignStart="@+id/addressTV"
         android:layout_below="@+id/addressTV"
@@ -56,12 +56,26 @@
         android:padding="10dp"
         android:textColor="#727272" />
 
-    <ListView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/reviewListView"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/hoursTV"
         android:layout_below="@+id/phoneNumberTV"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/adView" />
+        android:layout_alignStart="@+id/adView"
+        android:layout_alignEnd="@+id/phoneNumberTV"
+        android:padding="10dp"
+        android:layout_above="@+id/reviewsButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reviews"
+        android:id="@+id/reviewsButton"
+        android:layout_above="@+id/adView"
+        android:layout_alignStart="@+id/adView"
+        android:layout_alignEnd="@+id/adView"
+        android:background="#2196F3"
+        android:textColor="#ffffffff" />
 
 </RelativeLayout>
