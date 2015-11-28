@@ -16,6 +16,7 @@ import java.util.List;
 
 public class ReviewsExpandableListAdapter extends BaseExpandableListAdapter {
 
+
     private Context context;
     private List<String> headerData;
     // child data in format of header title, child title

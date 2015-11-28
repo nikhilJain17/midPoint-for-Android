@@ -81,12 +81,21 @@ public class DetailsActivity extends ActionBarActivity {
 
                 Bundle data = new Bundle();
 
+
                 data.putStringArray("author_reviews", reviewAuthorArr);
                 data.putStringArray("text_reviews", reviewTextArr);
                 data.putStringArray("rating_reviews", reviewRatingArr);
 
                 Intent intent = new Intent(getApplicationContext(), ReviewsActivity.class);
+
+                // testing passing it directly
+                intent.putExtra("text_reviews", reviewTextArr);
+                intent.putExtra("rating_reviews", reviewRatingArr);
                 intent.putExtra("data",data);
+
+                // TEST DO NOT READ
+                intent.putExtra("test", "test");
+
                 startActivity(intent);
 
             }
@@ -232,7 +241,7 @@ public class DetailsActivity extends ActionBarActivity {
         } // end of doInBackground
 
 
-        private void parseJson() throws JSONException{
+        private void parseJson() throws JSONException {
 
             hours = "";
 
@@ -249,9 +258,12 @@ public class DetailsActivity extends ActionBarActivity {
                 hours += openHours.getString(i);
                 hours += "\n"; // NEWLINE NEWLINE NEWLINE
             }
+            // delete the last \n
+            int last = hours.lastIndexOf('\n');
+            char lastChar = hours.charAt(last);
+            lastChar = ' ';
 
-
-            JSONArray reviews = rootJson.getJSONArray("reviews");
+            JSONArray reviews = result.getJSONArray("reviews");
 
             // if there is stuff inside it, then get stuff
             if (reviews.length() > 0) {
@@ -261,7 +273,7 @@ public class DetailsActivity extends ActionBarActivity {
                 reviewRatingArr = new String[reviews.length()];
                 reviewTextArr = new String[reviews.length()];
 
-                Log.i("DetailsActivity", "Getting Reviews");
+                Log.i("Get Reviews", "Getting Reviews");
 
                 for (int i = 0; i < reviews.length(); i++) {
 
@@ -279,10 +291,23 @@ public class DetailsActivity extends ActionBarActivity {
                 } // end of for
 
             } // end of if
-
             else {
-                Log.i("DetailsActivity", "NO Reviews!");
+                // make sure the arrays are not null
+                reviewAuthorArr = new String[1];
+                reviewTextArr = new String[1];
+                reviewRatingArr = new String[1];
+
+                reviewAuthorArr[0] = "No reviews";
+                reviewRatingArr[0] = "No reviews";
+                reviewTextArr[0] = "No reviews";
+
+
+                Log.i("Get Reviews", "NO Reviews!");
+
             }
+
+
+
 
 
 
