@@ -22,60 +22,61 @@
         ads:adUnitId="@string/banner_ad_unit_id">
     </com.google.android.gms.ads.AdView>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text=""
-        android:id="@+id/nameTV"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/adView"
-        android:padding="10dp"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/reviewsButton">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text=""
-        android:id="@+id/addressTV"
-        android:layout_below="@+id/nameTV"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/adView"
-        android:padding="10dp"
-        android:textColor="#4f4f4f" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text=""
+                android:id="@+id/nameTV"
+                android:padding="10dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text=""
-        android:id="@+id/phoneNumberTV"
-        android:layout_alignStart="@+id/addressTV"
-        android:layout_below="@+id/addressTV"
-        android:layout_alignEnd="@+id/addressTV"
-        android:padding="10dp"
-        android:textColor="#4f4f4f" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text=""
+                android:id="@+id/addressTV"
+                android:padding="10dp"
+                android:textColor="#4f4f4f" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/hoursTV"
-        android:layout_below="@+id/phoneNumberTV"
-        android:layout_alignStart="@+id/adView"
-        android:layout_alignEnd="@+id/phoneNumberTV"
-        android:padding="10dp"
-        android:layout_above="@+id/reviewsButton" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text=""
+                android:id="@+id/phoneNumberTV"
+                android:padding="10dp"
+                android:textColor="#4f4f4f" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/hoursTV"
+                android:padding="10dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reviews"
         android:id="@+id/reviewsButton"
+        android:background="#2196F3"
+        android:textColor="#ffffffff"
         android:layout_above="@+id/adView"
         android:layout_alignStart="@+id/adView"
         android:layout_alignEnd="@+id/adView"
-        android:background="#2196F3"
-        android:textColor="#ffffffff" />
+        android:text="Reviews" />
 
 </RelativeLayout>
