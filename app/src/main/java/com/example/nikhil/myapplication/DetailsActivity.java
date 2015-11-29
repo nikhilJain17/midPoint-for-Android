@@ -3,9 +3,12 @@ package com.example.nikhil.myapplication;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.Telephony;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +33,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+
 public class DetailsActivity extends ActionBarActivity {
 
     // to access the api
@@ -46,17 +53,18 @@ public class DetailsActivity extends ActionBarActivity {
 
     // Gui References
     TextView nameTV, addressTV, phoneNumberTV, hoursTV;
-    Button reviewButton;
+    Button reviewButton, textFriendsButton;
 
     // Since Bundles can only take 1-dimensional arrays, there have to be 3 separate forking arrays
     String[] reviewTextArr;
     String[] reviewAuthorArr;
     String[] reviewRatingArr;
 
+    // the friend names you want to text
+    String[] friendNameArray;
+    // their phone numbers from the server
+    ArrayList<String> friendNumberArray;
 
-    /*
-    TODO IMPLEMENT AN EXPANDABLE LISTVIEW TO DISPLAY REVIEWS!!!!!!!!
-     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +74,26 @@ public class DetailsActivity extends ActionBarActivity {
         // make action bar blue
         android.support.v7.app.ActionBar mActionBar = getSupportActionBar();
         mActionBar.setBackgroundDrawable(new ColorDrawable(0xff536DFE));
+
+
+        // get the name of the friends
+        friendNameArray = getIntent().getStringArrayExtra("friends");
+
+        if (friendNameArray != null) {
+//            Toast.makeText(this, "Not Null" + friendNameArray[0], Toast.LENGTH_SHORT).show();
+
+            // turn into json array to pass to server
+            try {
+
+                JSONArray friendNameJson = new JSONArray(friendNameArray);
+
+                // get phone numbers and store in friendNumberArray
+                getPhoneNumbers(friendNameJson);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
 
         // get the gui elements
@@ -102,6 +130,53 @@ public class DetailsActivity extends ActionBarActivity {
             }
         });
 
+        textFriendsButton = (Button) findViewById(R.id.textFriendsButton);
+        textFriendsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+//
+//                Intent textIntent = new Intent(Intent.ACTION_SEND_MULTIPLE); // doesnt specify who to send to
+//
+//                // This holds the text... need to parse user inputs
+//                textIntent.putExtra(Intent.EXTRA_TEXT, "Want to hang out at " + name + "?");
+//                textIntent.putExtra("address","9174129434");
+//                textIntent.putExtra("address","7323310872");
+//                textIntent.setType("text/plain");
+//
+//                String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(getApplicationContext()); // Need to change the build to API 19
+//
+//                // if there is an activity that can process the request
+//                if (defaultSmsPackageName != null) {
+//
+////            startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+//
+//                    textIntent.setPackage(defaultSmsPackageName);
+//
+//                } // end of if
+//
+//                startActivity(textIntent);
+//
+
+                // fetch the Sms Manager
+                SmsManager sms = SmsManager.getDefault();
+
+                // the message
+                String message = "Want to hang out at " + name + "?";
+
+                // the phone numbers we want to send to
+                String numbers[] = {"7323310873", "7323310872"};
+
+                for(String number : numbers) {
+                    sms.sendTextMessage(number, null, message, null, null);
+                }
+
+                Toast.makeText(getApplicationContext(), "Sent texts!", Toast.LENGTH_SHORT).show();
+
+            } // end of onClick
+
+        });
+
         // Display the ad via AdMob
         AdView adView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -117,6 +192,52 @@ public class DetailsActivity extends ActionBarActivity {
 
 
     } // end of onCreate
+
+
+    // get phone numbers from server of friends
+    private void getPhoneNumbers(JSONArray friends) {
+
+        try {
+            Socket mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
+            mSocket.connect();
+
+            mSocket.emit("friends numbers needed", friends);
+
+            mSocket.on("friends numbers", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+
+                    Log.i("Got Friends Numbers", "HALLELUJAH");
+
+                    final JSONArray arr;
+
+                    try {
+
+                        arr = (JSONArray) args[0];
+
+                        for (int i = 0; i < arr.length(); i++) {
+
+                            Log.i("Friend Number:", arr.getString(i));
+                            friendNumberArray.add(arr.getString(i));
+
+                        } // end of for
+
+                    }
+                    catch (Exception e) {
+                        Log.i("Parsing Friends", "ERROR");
+                        e.printStackTrace();
+                    } // end of try catch
+
+                } // end of call
+            }); // end of mSocket.on
+
+
+        } // end of try
+        catch (Exception e) {
+            e.printStackTrace();
+        } // end of catch
+
+    }
 
 
     // does exactly what it sounds like it does

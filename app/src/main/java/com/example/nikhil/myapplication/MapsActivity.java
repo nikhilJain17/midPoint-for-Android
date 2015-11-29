@@ -73,11 +73,17 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     String rootJsonStr;
 
 
+    // TO TRANSFER TO DETAILS ACTIVITY FOR TEXTING FRIENDS
+    String[] friendsArray ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
+        friendsArray = getIntent().getStringArrayExtra("friends");
+
 
         placeIdArray = new ArrayList<>();
 
@@ -299,6 +305,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
             datum.putString("place_id", placeIdToSend);
 
             intent.putExtra("datum", datum);
+            // sending the friends whom were selected over
+            intent.putExtra("friends", friendsArray);
 
             startActivity(intent);
 

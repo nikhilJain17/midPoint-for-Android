@@ -25,7 +25,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/reviewsButton">
+        android:layout_above="@+id/reviewsButton"
+        android:id="@+id/scrollView">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,9 +75,19 @@
         android:id="@+id/reviewsButton"
         android:background="#2196F3"
         android:textColor="#ffffffff"
+        android:text="Reviews"
         android:layout_above="@+id/adView"
-        android:layout_alignStart="@+id/adView"
+        android:layout_alignStart="@+id/adView" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Text Friends"
+        android:background="#2196F3"
+        android:textColor="#ffffffff"
+        android:id="@+id/textFriendsButton"
+        android:layout_below="@+id/scrollView"
         android:layout_alignEnd="@+id/adView"
-        android:text="Reviews" />
+        />
 
 </RelativeLayout>
