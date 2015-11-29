@@ -87,6 +87,8 @@ public class SignupActivity extends ActionBarActivity {
 
     } // end of onCreate()
 
+
+
     private void signUp() throws URISyntaxException{
 
         // get the stuff the user entered
@@ -98,7 +100,7 @@ public class SignupActivity extends ActionBarActivity {
         String phoneNum = phoneNumberET.getText().toString();
 
         // confirm the password is the same in both text fields
-        if (password.equals(passwordConfirm) && !address.equals("")) {
+        if (password.equals(passwordConfirm) && address.length() > 1 && phoneNum.length() > 9 && username.length() > 1 && name.length() > 1) {
 
             // send the goods to the server
             Socket mSocket;
@@ -133,7 +135,7 @@ public class SignupActivity extends ActionBarActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(), "Sorry, username in use", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Sorry, username in use", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -144,6 +146,9 @@ public class SignupActivity extends ActionBarActivity {
             });
 
 
+        } // end of if
+        else {
+            Toast.makeText(this, "Invalid login fields!", Toast.LENGTH_SHORT).show();
         }
 
     } // end of signUp()
