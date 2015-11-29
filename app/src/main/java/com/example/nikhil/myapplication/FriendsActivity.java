@@ -19,6 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -31,6 +33,7 @@ public class FriendsActivity extends ActionBarActivity {
     // friends
     ListView friendsListView;
     ArrayList<String> friends;
+    Set<String> friendsSet;
     ArrayAdapter<String> adapter;
 
     // sharedpreferences stuff
@@ -45,6 +48,46 @@ public class FriendsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
 
+//        // sharedprefs
+//        sharedPrefs = getSharedPreferences(FILENAME, 0);
+//        username = sharedPrefs.getString("username", "ERROR");
+//
+//        // listview stuff
+//        friendsListView = (ListView) findViewById(R.id.friendLV);
+//
+//        friendsSet = new HashSet<>();
+//        friends = new ArrayList<String>();
+//
+//
+//        adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_1, friends);
+//
+//        friendsListView.setAdapter(adapter);
+//
+//        // Change the cheeky color of the action bar
+//        ActionBar barz = getSupportActionBar();
+//        barz.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2196F3")));
+//
+//        // CONNECT TO SERVER
+//        try {
+//            mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
+//            mSocket.connect();
+//
+////            Toast.makeText(this, username, Toast.LENGTH_SHORT).show();
+//
+//            extractFriends();
+//            adapter.notifyDataSetChanged();
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         // sharedprefs
         sharedPrefs = getSharedPreferences(FILENAME, 0);
         username = sharedPrefs.getString("username", "ERROR");
@@ -52,6 +95,7 @@ public class FriendsActivity extends ActionBarActivity {
         // listview stuff
         friendsListView = (ListView) findViewById(R.id.friendLV);
 
+        friendsSet = new HashSet<>();
         friends = new ArrayList<String>();
 
 
@@ -78,53 +122,47 @@ public class FriendsActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // TODO is this code relevant
-        setContentView(R.layout.activity_friends);
-
-        // sharedprefs
-        sharedPrefs = getSharedPreferences(FILENAME, 0);
-        username = sharedPrefs.getString("username", "ERROR");
-
-        // listview stuff
-        friendsListView = (ListView) findViewById(R.id.friendLV);
-
-        friends = new ArrayList<String>();
-
-
-        adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, friends);
-
-        friendsListView.setAdapter(adapter);
-        friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(FriendsActivity.this, friends.get(position), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        // CONNECT TO SERVER
-        try {
-            mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
-            mSocket.connect();
-
-//            Toast.makeText(this, username, Toast.LENGTH_SHORT).show();
-
-            extractFriends();
-            adapter.notifyDataSetChanged();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+//        // TODO is this code relevant
+//        setContentView(R.layout.activity_friends);
+//
+//        // sharedprefs
+//        sharedPrefs = getSharedPreferences(FILENAME, 0);
+//        username = sharedPrefs.getString("username", "ERROR");
+//
+//        // listview stuff
+//        friendsListView = (ListView) findViewById(R.id.friendLV);
+//
+//        friends = new ArrayList<String>();
+//
+//
+//        adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_1, friends);
+//
+//        friendsListView.setAdapter(adapter);
+//        friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(FriendsActivity.this, friends.get(position), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//
+//        // CONNECT TO SERVER
+//        try {
+//            mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
+//            mSocket.connect();
+//
+////            Toast.makeText(this, username, Toast.LENGTH_SHORT).show();
+//
+//            extractFriends();
+//            adapter.notifyDataSetChanged();
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
-
 
 
     // access the friend data

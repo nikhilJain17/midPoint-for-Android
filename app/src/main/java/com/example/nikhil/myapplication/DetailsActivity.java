@@ -93,7 +93,9 @@ public class DetailsActivity extends ActionBarActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+
+        } // end of if
+
 
 
         // get the gui elements
@@ -134,44 +136,28 @@ public class DetailsActivity extends ActionBarActivity {
         textFriendsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+              // if there are numbers to send to
+                if (friendNumberArray != null) {
+                    // fetch the Sms Manager
+                    SmsManager sms = SmsManager.getDefault();
 
-//
-//                Intent textIntent = new Intent(Intent.ACTION_SEND_MULTIPLE); // doesnt specify who to send to
-//
-//                // This holds the text... need to parse user inputs
-//                textIntent.putExtra(Intent.EXTRA_TEXT, "Want to hang out at " + name + "?");
-//                textIntent.putExtra("address","9174129434");
-//                textIntent.putExtra("address","7323310872");
-//                textIntent.setType("text/plain");
-//
-//                String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(getApplicationContext()); // Need to change the build to API 19
-//
-//                // if there is an activity that can process the request
-//                if (defaultSmsPackageName != null) {
-//
-////            startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
-//
-//                    textIntent.setPackage(defaultSmsPackageName);
-//
-//                } // end of if
-//
-//                startActivity(textIntent);
-//
+                    // the message
+                    String message = "Want to hang out at " + name + "?";
 
-                // fetch the Sms Manager
-                SmsManager sms = SmsManager.getDefault();
+                    // the phone numbers we want to send to
+//                    String numbers[] = {"7323310873", "6666666666"};
 
-                // the message
-                String message = "Want to hang out at " + name + "?";
+                    for (String number : friendNumberArray) {
+                        sms.sendTextMessage(number, null, message, null, null);
+                    }
 
-                // the phone numbers we want to send to
-                String numbers[] = {"7323310873", "7323310872"};
-
-                for(String number : numbers) {
-                    sms.sendTextMessage(number, null, message, null, null);
+                    String namesSentTo;
+                    Toast.makeText(getApplicationContext(), "Sent texts!", Toast.LENGTH_SHORT).show();
                 }
 
-                Toast.makeText(getApplicationContext(), "Sent texts!", Toast.LENGTH_SHORT).show();
+                else {
+                    Toast.makeText(getApplicationContext(), "No friends added to text!", Toast.LENGTH_SHORT).show();
+                } // end of else
 
             } // end of onClick
 
@@ -200,8 +186,13 @@ public class DetailsActivity extends ActionBarActivity {
         try {
             Socket mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
             mSocket.connect();
+//
+//            JSONArray test = new JSONArray();
+//            test.put("Nikhil Jain");
+            String[] test = new String[1];
+            test[0] = "Nikhil Jain";
 
-            mSocket.emit("friends numbers needed", friends);
+            mSocket.emit("friends numbers needed", test);
 
             mSocket.on("friends numbers", new Emitter.Listener() {
                 @Override
@@ -229,6 +220,7 @@ public class DetailsActivity extends ActionBarActivity {
                     } // end of try catch
 
                 } // end of call
+
             }); // end of mSocket.on
 
 
