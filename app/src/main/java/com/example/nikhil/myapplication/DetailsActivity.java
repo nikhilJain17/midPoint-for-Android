@@ -78,6 +78,7 @@ public class DetailsActivity extends ActionBarActivity {
 
         // get the name of the friends
         friendNameArray = getIntent().getStringArrayExtra("friends");
+        friendNumberArray = new ArrayList<>();
 
         if (friendNameArray != null) {
 //            Toast.makeText(this, "Not Null" + friendNameArray[0], Toast.LENGTH_SHORT).show();
@@ -137,7 +138,7 @@ public class DetailsActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
               // if there are numbers to send to
-                if (friendNumberArray != null) {
+                if (friendNumberArray != null && friendNameArray.length != 0) {
                     // fetch the Sms Manager
                     SmsManager sms = SmsManager.getDefault();
 
@@ -183,16 +184,27 @@ public class DetailsActivity extends ActionBarActivity {
     // get phone numbers from server of friends
     private void getPhoneNumbers(JSONArray friends) {
 
+        // TODO Delete later
+        try {
+            String fr ="";
+            for (int i = 0; i < friends.length(); i++)
+                fr += friends.getString(i);
+
+            Toast.makeText(getApplicationContext(), fr, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "Shit", Toast.LENGTH_SHORT).show();
+        }
+
         try {
             Socket mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
             mSocket.connect();
 //
 //            JSONArray test = new JSONArray();
-//            test.put("Nikhil Jain");
-            String[] test = new String[1];
-            test[0] = "Nikhil Jain";
+//            test.put("darthbatman");
+//            String[] test = new String[1];
+//            test[0] = "Nikhil Jain";
 
-            mSocket.emit("friends numbers needed", test);
+            mSocket.emit("friends numbers needed", friends);
 
             mSocket.on("friends numbers", new Emitter.Listener() {
                 @Override
