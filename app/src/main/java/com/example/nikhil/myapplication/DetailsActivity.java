@@ -184,17 +184,6 @@ public class DetailsActivity extends ActionBarActivity {
     // get phone numbers from server of friends
     private void getPhoneNumbers(JSONArray friends) {
 
-        // TODO Delete later
-        try {
-            String fr ="";
-            for (int i = 0; i < friends.length(); i++)
-                fr += friends.getString(i);
-
-            Toast.makeText(getApplicationContext(), fr, Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Shit", Toast.LENGTH_SHORT).show();
-        }
-
         try {
             Socket mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
             mSocket.connect();
