@@ -62,7 +62,7 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".LoginActivity"
-            android:label="mid.Point"
+            android:label="midPoint"
             android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

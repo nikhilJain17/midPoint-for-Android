@@ -63,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/hoursTV"
+                android:textColor="#4f4f4f"
                 android:padding="10dp"/>
 
         </LinearLayout>
