@@ -14,6 +14,7 @@
         This is an ad unit ID for a test add
         TODO Generate a new thing here with a legit account and stuff
     <!- -->
+    <!-- ca-app-pub-4301811361991654/9806588526-->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_signup">Create an Account</string>

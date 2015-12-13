@@ -146,7 +146,6 @@ public class DetailsActivity extends ActionBarActivity {
                     String message = "Want to hang out at " + name + "?";
 
                     // the phone numbers we want to send to
-//                    String numbers[] = {"7323310873", "6666666666"};
 
                     for (String number : friendNumberArray) {
                         sms.sendTextMessage(number, null, message, null, null);
@@ -166,7 +165,8 @@ public class DetailsActivity extends ActionBarActivity {
 
         // Display the ad via AdMob
         AdView adView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
         adView.loadAd(adRequest);
 
 
