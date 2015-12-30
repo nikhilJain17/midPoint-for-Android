@@ -26,7 +26,8 @@
         android:layout_marginTop="0dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/submitButton" />
+        android:layout_toStartOf="@+id/submitButton"
+        android:layout_alignEnd="@+id/addButton" />
 
     <Button
         android:layout_width="wrap_content"
@@ -36,8 +37,8 @@
         android:onClick="onSubmitButtonClick"
         android:background="@drawable/roundedbutton"
         android:textColor="#0d47a1"
-        android:layout_alignBottom="@+id/typeEditText"
-        android:layout_alignStart="@+id/button2" />
+        android:layout_below="@+id/typeEditText"
+        android:layout_alignEnd="@+id/listView" />
 
     <ImageView
         android:layout_width="50dp"
@@ -47,8 +48,8 @@
         android:id="@+id/button2"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_above="@+id/listView"
-        android:layout_alignEnd="@+id/listView" />
+        android:layout_alignTop="@+id/addLocationButton"
+        android:layout_alignParentStart="true" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -78,18 +79,10 @@
         android:onClick="onYourLocationButtonClick"
         android:src="@drawable/newlocation"
         android:textColor="#FFFFFF"
-        android:layout_below="@+id/submitButton"
+        android:layout_alignTop="@+id/submitButton"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/addFriendLocationButton"
-        android:background="@drawable/newfriends"
-        android:onClick="onAddFriendButtonClick"
-        android:layout_above="@+id/listView"
-        android:layout_alignStart="@+id/listView" />
-        <!--android:layout_alignBottom="@id/addLocationButton"-->
+    <!--android:layout_alignBottom="@id/addLocationButton"-->
 
 
 
