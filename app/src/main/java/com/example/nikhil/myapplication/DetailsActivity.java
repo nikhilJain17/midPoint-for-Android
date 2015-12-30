@@ -137,27 +137,50 @@ public class DetailsActivity extends ActionBarActivity {
         textFriendsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              // if there are numbers to send to
-                if (friendNumberArray != null && friendNameArray.length != 0) {
-                    // fetch the Sms Manager
-                    SmsManager sms = SmsManager.getDefault();
 
-                    // the message
-                    String message = "Want to hang out at " + name + "?";
+                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                sendIntent.setData(Uri.parse("sms:"));
+                startActivity(Intent.createChooser(sendIntent, "Send via"));
 
-                    // the phone numbers we want to send to
+//                Intent intent = new Intent(Telephony.Sms.getDefaultSmsPackage(getApplicationContext()));
+//                intent.setType("text/plain");
+//                intent.putExtra(Intent.EXTRA_TEXT, "Want to hang out at " + name + "?" );
+//                startActivity(Intent.createChooser(intent,
+//                        "Send Text Using: "));
 
-                    for (String number : friendNumberArray) {
-                        sms.sendTextMessage(number, null, message, null, null);
-                    }
+//// Create intent to show chooser
+//                Intent chooser = Intent.createChooser(intent, "Open App");
+//
+//// Verify the intent will resolve to at least one activity
+//                if (intent.resolveActivity(getPackageManager()) != null) {
+//                    startActivity(chooser);
+//                }
+//                else {
+//                    Toast.makeText(getApplicationContext(), "No apps found! Sorry", Toast.LENGTH_SHORT).show();
+//                }
 
-                    String namesSentTo;
-                    Toast.makeText(getApplicationContext(), "Sent texts!", Toast.LENGTH_SHORT).show();
-                }
-
-                else {
-                    Toast.makeText(getApplicationContext(), "No friends added to text!", Toast.LENGTH_SHORT).show();
-                } // end of else
+                // TODO Rest in peace sweet feature, it had to be deleted because of apple policies for ios app =(
+//              // if there are numbers to send to
+//                if (friendNumberArray != null && friendNameArray.length != 0) {
+//                    // fetch the Sms Manager
+//                    SmsManager sms = SmsManager.getDefault();
+//
+//                    // the message
+//                    String message = "Want to hang out at " + name + "?";
+//
+//                    // the phone numbers we want to send to
+//
+//                    for (String number : friendNumberArray) {
+//                        sms.sendTextMessage(number, null, message, null, null);
+//                    }
+//
+//                    String namesSentTo;
+//                    Toast.makeText(getApplicationContext(), "Sent texts!", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                else {
+//                    Toast.makeText(getApplicationContext(), "No friends added to text!", Toast.LENGTH_SHORT).show();
+//                } // end of else
 
             } // end of onClick
 
