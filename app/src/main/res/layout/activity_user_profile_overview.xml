@@ -31,8 +31,10 @@
         android:text="Add"
         android:id="@+id/addFriendButton"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/addFriendET"
-        android:onClick="onAddFriendButtonClick"/>
+        android:onClick="onAddFriendButtonClick"
+        android:layout_alignEnd="@+id/messagesListView"
+        android:textColor="#ffffff"
+        android:background="#2196F3" />
 
     <!--instead of deleting this, just made it invisible-->
     <!-- TODO fix...-->
@@ -51,7 +53,10 @@
         android:layout_below="@+id/friendsListView"
         android:layout_alignParentStart="true"
         android:layout_marginTop="100dp"
-        android:onClick="onFriendButtonClick"/>
+        android:onClick="onFriendButtonClick"
+        android:layout_alignEnd="@+id/addFriendButton"
+        android:textColor="#ffffff"
+        android:background="#2196F3" />
 
     <Button
         android:layout_width="wrap_content"
@@ -59,8 +64,12 @@
         android:text="Friend Requests"
         android:id="@+id/friendRequestBTN"
         android:onClick="onFriendRequestButtonClick"
-        android:layout_alignBottom="@+id/friendBTN"
-        android:layout_alignEnd="@+id/addFriendButton" />
+        android:layout_below="@+id/friendBTN"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="61dp"
+        android:layout_alignEnd="@+id/friendBTN"
+        android:textColor="#ffffff"
+        android:background="#2196F3" />
 
 
 </RelativeLayout>

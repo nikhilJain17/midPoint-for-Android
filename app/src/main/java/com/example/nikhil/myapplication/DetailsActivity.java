@@ -1,14 +1,20 @@
 package com.example.nikhil.myapplication;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.Telephony;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +33,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+
 public class DetailsActivity extends ActionBarActivity {
 
     // to access the api
@@ -36,22 +46,25 @@ public class DetailsActivity extends ActionBarActivity {
     String formatted_address;
     String formatted_phone_number;
     String name;
-    String url;
-    int numOfReviews;
+//    String url;
+//    int numOfReviews;
     String status;
+    String hours;
 
     // Gui References
-    TextView nameTV, addressTV, phoneNumberTV;
-    ListView reviewListView;
+    TextView nameTV, addressTV, phoneNumberTV, hoursTV;
+    Button reviewButton, textFriendsButton;
 
-    ArrayAdapter<String> mAdapter;
-    ArrayList<String> reviewTextArray; // to be shown on a dialog fragment
-    ArrayList<String> ratingsArray; // to be displayed
+    // Since Bundles can only take 1-dimensional arrays, there have to be 3 separate forking arrays
+    String[] reviewTextArr;
+    String[] reviewAuthorArr;
+    String[] reviewRatingArr;
 
+    // the friend names you want to text
+    String[] friendNameArray;
+    // their phone numbers from the server
+    ArrayList<String> friendNumberArray;
 
-    /*
-    TODO IMPLEMENT AN EXPANDABLE LISTVIEW TO DISPLAY REVIEWS!!!!!!!!
-     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +76,120 @@ public class DetailsActivity extends ActionBarActivity {
         mActionBar.setBackgroundDrawable(new ColorDrawable(0xff536DFE));
 
 
+        // get the name of the friends
+        friendNameArray = getIntent().getStringArrayExtra("friends");
+        friendNumberArray = new ArrayList<>();
+
+        if (friendNameArray != null) {
+//            Toast.makeText(this, "Not Null" + friendNameArray[0], Toast.LENGTH_SHORT).show();
+
+            // turn into json array to pass to server
+            try {
+
+                JSONArray friendNameJson = new JSONArray(friendNameArray);
+
+                // get phone numbers and store in friendNumberArray
+                getPhoneNumbers(friendNameJson);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } // end of if
+
+
+
         // get the gui elements
         nameTV = (TextView) findViewById(R.id.nameTV);
         addressTV = (TextView) findViewById(R.id.addressTV);
         phoneNumberTV = (TextView) findViewById(R.id.phoneNumberTV);
+        hoursTV = (TextView) findViewById(R.id.hoursTV);
+
+        reviewButton = (Button) findViewById(R.id.reviewsButton);
+        reviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle data = new Bundle();
+
+
+                data.putStringArray("author_reviews", reviewAuthorArr);
+                data.putStringArray("text_reviews", reviewTextArr);
+                data.putStringArray("rating_reviews", reviewRatingArr);
+
+                Intent intent = new Intent(getApplicationContext(), ReviewsActivity.class);
+
+                // testing passing it directly
+                intent.putExtra("text_reviews", reviewTextArr);
+                intent.putExtra("rating_reviews", reviewRatingArr);
+                intent.putExtra("author_reviews", reviewAuthorArr);
+                intent.putExtra("data",data);
+
+                // TEST DO NOT READ
+                intent.putExtra("test", "test");
+
+                startActivity(intent);
+
+            }
+        });
+
+        textFriendsButton = (Button) findViewById(R.id.textFriendsButton);
+        textFriendsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                sendIntent.setData(Uri.parse("sms:"));
+                startActivity(Intent.createChooser(sendIntent, "Send via"));
+
+//                Intent intent = new Intent(Telephony.Sms.getDefaultSmsPackage(getApplicationContext()));
+//                intent.setType("text/plain");
+//                intent.putExtra(Intent.EXTRA_TEXT, "Want to hang out at " + name + "?" );
+//                startActivity(Intent.createChooser(intent,
+//                        "Send Text Using: "));
+
+//// Create intent to show chooser
+//                Intent chooser = Intent.createChooser(intent, "Open App");
+//
+//// Verify the intent will resolve to at least one activity
+//                if (intent.resolveActivity(getPackageManager()) != null) {
+//                    startActivity(chooser);
+//                }
+//                else {
+//                    Toast.makeText(getApplicationContext(), "No apps found! Sorry", Toast.LENGTH_SHORT).show();
+//                }
+
+                // TODO Rest in peace sweet feature, it had to be deleted because of apple policies for ios app =(
+//              // if there are numbers to send to
+//                if (friendNumberArray != null && friendNameArray.length != 0) {
+//                    // fetch the Sms Manager
+//                    SmsManager sms = SmsManager.getDefault();
+//
+//                    // the message
+//                    String message = "Want to hang out at " + name + "?";
+//
+//                    // the phone numbers we want to send to
+//
+//                    for (String number : friendNumberArray) {
+//                        sms.sendTextMessage(number, null, message, null, null);
+//                    }
+//
+//                    String namesSentTo;
+//                    Toast.makeText(getApplicationContext(), "Sent texts!", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                else {
+//                    Toast.makeText(getApplicationContext(), "No friends added to text!", Toast.LENGTH_SHORT).show();
+//                } // end of else
+
+            } // end of onClick
+
+        });
 
         // Display the ad via AdMob
         AdView adView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
         adView.loadAd(adRequest);
 
 
@@ -82,19 +201,62 @@ public class DetailsActivity extends ActionBarActivity {
         apiTask.execute();
 
 
-        // set up list view components
-        reviewListView = (ListView) findViewById(R.id.reviewListView);
-        reviewTextArray = new ArrayList<>();
-
-
-
     } // end of onCreate
 
 
+    // get phone numbers from server of friends
+    private void getPhoneNumbers(JSONArray friends) {
+
+        try {
+            Socket mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
+            mSocket.connect();
+//
+//            JSONArray test = new JSONArray();
+//            test.put("darthbatman");
+//            String[] test = new String[1];
+//            test[0] = "Nikhil Jain";
+
+            mSocket.emit("friends numbers needed", friends);
+
+            mSocket.on("friends numbers", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+
+                    Log.i("Got Friends Numbers", "HALLELUJAH");
+
+                    final JSONArray arr;
+
+                    try {
+
+                        arr = (JSONArray) args[0];
+
+                        for (int i = 0; i < arr.length(); i++) {
+
+                            Log.i("Friend Number:", arr.getString(i));
+                            friendNumberArray.add(arr.getString(i));
+
+                        } // end of for
+
+                    }
+                    catch (Exception e) {
+                        Log.i("Parsing Friends", "ERROR");
+                        e.printStackTrace();
+                    } // end of try catch
+
+                } // end of call
+
+            }); // end of mSocket.on
+
+
+        } // end of try
+        catch (Exception e) {
+            e.printStackTrace();
+        } // end of catch
+
+    }
+
+
     // does exactly what it sounds like it does
-
-
-
     // TODO implement later if placepicker gets updated with specific types of places
     private void getPlacePickerBundleData() {
 
@@ -151,7 +313,10 @@ public class DetailsActivity extends ActionBarActivity {
             try {
                 // construct the url
                 String baseUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + placeId;
-                String key = "&key=AIzaSyBi8Ybo_2QPTKc9CBd3C7yJrleiqUDiQtY";
+                String key = "&key=AIzaSyDYQAZn43BK_TUtIy1OhDn95Vb4R2OFmVg";
+
+                Log.d("DetailsActivity",baseUrl+key);
+
                 URL url = new URL(baseUrl + key);
 
                 // connect to the api
@@ -214,7 +379,9 @@ public class DetailsActivity extends ActionBarActivity {
         } // end of doInBackground
 
 
-        private void parseJson() throws JSONException{
+        private void parseJson() throws JSONException {
+
+            hours = "";
 
             JSONObject rootJson = new JSONObject(rawJson);
             JSONObject result = rootJson.getJSONObject("result");
@@ -223,25 +390,64 @@ public class DetailsActivity extends ActionBarActivity {
             name = result.getString("name");
             status = rootJson.getString("status");
 
-            JSONArray reviews = rootJson.getJSONArray("reviews");
+            JSONArray openHours = result.getJSONObject("opening_hours").getJSONArray("weekday_text");
+
+            for (int i = 0; i < openHours.length(); i++) {
+                hours += openHours.getString(i);
+                hours += "\n"; // NEWLINE NEWLINE NEWLINE
+            }
+            // delete the last \n
+            int last = hours.lastIndexOf('\n');
+            char lastChar = hours.charAt(last);
+            lastChar = ' ';
+
+            JSONArray reviews = result.getJSONArray("reviews");
 
             // if there is stuff inside it, then get stuff
             if (reviews.length() > 0) {
+
+                // Holds author name, text of review, and rating out of 5 (e.g. 4/5, dick/5, etc)
+                reviewAuthorArr = new String[reviews.length()];
+                reviewRatingArr = new String[reviews.length()];
+                reviewTextArr = new String[reviews.length()];
+
+                Log.i("Get Reviews", "Getting Reviews");
 
                 for (int i = 0; i < reviews.length(); i++) {
 
                     JSONObject review = reviews.getJSONObject(i);
 
-                    int rating = review.getInt("rating");
+                    String rating = review.getString("rating");
                     String text = review.getString("text");
                     String author_name = review.getString("author_name");
 
-                    ratingsArray.add(Integer.toString(rating));
-                    reviewTextArray.add(text + " ~" + author_name);
+
+                    reviewRatingArr[i] = rating;
+                    reviewTextArr[i] = text;
+                    reviewAuthorArr[i] = author_name;
 
                 } // end of for
 
             } // end of if
+            else {
+                // make sure the arrays are not null
+                reviewAuthorArr = new String[1];
+                reviewTextArr = new String[1];
+                reviewRatingArr = new String[1];
+
+                reviewAuthorArr[0] = "No reviews";
+                reviewRatingArr[0] = "No reviews";
+                reviewTextArr[0] = "No reviews";
+
+
+                Log.i("Get Reviews", "NO Reviews!");
+
+            }
+
+
+
+
+
 
         } // end of parseJson
 
@@ -253,6 +459,14 @@ public class DetailsActivity extends ActionBarActivity {
             nameTV.setText(name);
             addressTV.setText(formatted_address);
             phoneNumberTV.setText(formatted_phone_number);
+            hoursTV.setText(hours);
+
+
+//            if (openNow.contains("False"))
+//                openNowTV.setText("Not Currently Open");
+//
+//            else if (openNow.contains("True"))
+//                openNowTV.setText("Currently Open");
 
         }
     } // end of DetailsApiTask

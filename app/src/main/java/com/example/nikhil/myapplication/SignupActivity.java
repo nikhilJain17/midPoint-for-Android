@@ -24,6 +24,7 @@ public class SignupActivity extends ActionBarActivity {
     EditText passwordET;
     EditText passwordConfirmET;
     EditText addressET;
+    EditText phoneNumberET;
 
     Button signupButton;
 
@@ -39,7 +40,7 @@ public class SignupActivity extends ActionBarActivity {
         // style action bar
 
         ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00BCD4")));
+        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2196F3")));
 
         suInUse = false;
 
@@ -49,6 +50,7 @@ public class SignupActivity extends ActionBarActivity {
         passwordET = (EditText) findViewById(R.id.passwordET);
         passwordConfirmET = (EditText) findViewById(R.id.passwordConfirmET);
         addressET = (EditText) findViewById(R.id.addressET);
+        phoneNumberET = (EditText) findViewById(R.id.phoneNumET);
 
         signupButton = (Button) findViewById(R.id.signupButton);
 
@@ -61,12 +63,12 @@ public class SignupActivity extends ActionBarActivity {
 
                 try {
 
-                    if (usernameET.getText().length() < 6)
-                        Toast.makeText(getApplicationContext(), "Username must be longer than 6 letters", Toast.LENGTH_SHORT).show();
-
-                    // TODO how to verify address??? geocode...
-                    if (addressET.getText().length() == 0)
-                        Toast.makeText(getApplicationContext(), "Invalid address", Toast.LENGTH_SHORT).show();
+//                    if (usernameET.getText().length() < 6)
+//                        Toast.makeText(getApplicationContext(), "Username must be longer than 6 letters", Toast.LENGTH_SHORT).show();
+//
+//
+//                    if (addressET.getText().length() == 0)
+//                        Toast.makeText(getApplicationContext(), "Invalid address", Toast.LENGTH_SHORT).show();
 
                     signUp();
                 }
@@ -85,6 +87,8 @@ public class SignupActivity extends ActionBarActivity {
 
     } // end of onCreate()
 
+
+
     private void signUp() throws URISyntaxException{
 
         // get the stuff the user entered
@@ -93,10 +97,10 @@ public class SignupActivity extends ActionBarActivity {
         String password = passwordET.getText().toString();
         String passwordConfirm = passwordConfirmET.getText().toString();
         String address = addressET.getText().toString();
-// TODO Fix this address optional stuff
+        String phoneNum = phoneNumberET.getText().toString();
 
         // confirm the password is the same in both text fields
-        if (password.equals(passwordConfirm)) {
+        if (password.equals(passwordConfirm) && address.length() > 1 && phoneNum.length() > 9 && username.length() > 1 && name.length() > 1) {
 
             // send the goods to the server
             Socket mSocket;
@@ -104,7 +108,7 @@ public class SignupActivity extends ActionBarActivity {
             mSocket.connect();
 
             // not sending phone numbers
-            mSocket.emit("sign up attempt", name, username, password, 666, address);
+            mSocket.emit("sign up attempt", name, username, password, phoneNum, address);
 
             // listen for success
             mSocket.on("sign up success", new Emitter.Listener() {
@@ -131,7 +135,7 @@ public class SignupActivity extends ActionBarActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(), "Sorry, username in use", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Sorry, username in use", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -142,6 +146,9 @@ public class SignupActivity extends ActionBarActivity {
             });
 
 
+        } // end of if
+        else {
+            Toast.makeText(this, "Invalid login fields!", Toast.LENGTH_SHORT).show();
         }
 
     } // end of signUp()

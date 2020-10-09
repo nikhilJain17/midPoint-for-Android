@@ -18,7 +18,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:hint="Username"
-        android:textColor="#727272" />
+        android:textColor="#4f4f4f" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
         android:layout_marginTop="68dp"
         android:password="true"
         android:hint="Password"
-        android:textColor="#727272"
+        android:textColor="#4f4f4f"
         android:layout_below="@+id/usernameET"
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/usernameET" />
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:text="Login"
         android:id="@+id/loginButton"
-        android:background="#00BCD4"
+        android:background="#2196F3"
         android:onClick="onLoginButtonClick"
         android:layout_marginTop="105dp"
         android:layout_below="@+id/passwordET"
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:text="New Account"
         android:id="@+id/createNewAccountButton"
-        android:background="#00BCD4"
+        android:background="#2196F3"
         android:textColor="#FFFFFF"
         android:layout_below="@+id/loginButton"
         android:layout_alignParentStart="true"

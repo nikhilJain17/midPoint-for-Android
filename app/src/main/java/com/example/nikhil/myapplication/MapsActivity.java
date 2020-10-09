@@ -1,13 +1,18 @@
 package com.example.nikhil.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -68,11 +73,17 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     String rootJsonStr;
 
 
+    // TO TRANSFER TO DETAILS ACTIVITY FOR TEXTING FRIENDS
+    String[] friendsArray ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
+        friendsArray = getIntent().getStringArrayExtra("friends");
+
 
         placeIdArray = new ArrayList<>();
 
@@ -214,6 +225,35 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
     }
 
+    // get user location
+    private LatLng getUserLocation(){
+
+        String towers;
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        towers = lm.getBestProvider(criteria, false);
+
+        Location userLocation = lm.getLastKnownLocation(towers);
+
+        if (userLocation != null) {
+
+            String lat = Double.toString(userLocation.getLatitude());
+            String longd = Double.toString(userLocation.getLongitude());
+
+            Log.d("User's Location: ", "Lat: " + lat + " Long: " + longd);
+
+            return new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+
+        }
+
+        else
+            Log.d("User Location", "Failed to get user's location");
+
+        return null;
+
+    }
+
     // Connection failed while trying to connect to the Google Places Api
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
@@ -265,6 +305,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
             datum.putString("place_id", placeIdToSend);
 
             intent.putExtra("datum", datum);
+            // sending the friends whom were selected over
+            intent.putExtra("friends", friendsArray);
 
             startActivity(intent);
 
@@ -376,7 +418,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 String location = Double.toString(midPointLat) + "," + Double.toString(midPointLong);
                 String types = "&types=" + typeOfPlace;
                 // TODO Add a slider to allow the user to choose the radius they want to search in
-                String KEY = "&rankby=distance&key=AIzaSyBi8Ybo_2QPTKc9CBd3C7yJrleiqUDiQtY";
+                String KEY = "&rankby=distance&key=AIzaSyDYQAZn43BK_TUtIy1OhDn95Vb4R2OFmVg";
 
                 String URLstring = baseURL + location + types + KEY;
 
@@ -396,6 +438,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                     return null;
                 }
 
+
+
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
                 String line;
@@ -407,6 +451,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 unparsedJSON = buffer.toString();
                 rootJsonStr = unparsedJSON;
                 Log.d("Raw JSON", unparsedJSON);
+
+
 
             }
 
@@ -488,9 +534,130 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
         } // end of getLatLongs()
 
+        // Check if over query limit for web service
+        private void overQueryLimit() {
+
+            try {
+                JSONObject rootJson = new JSONObject(unparsedJSON);
+                String err = rootJson.getString("status");
+                Log.d("Status: ", err);
+
+                if (err.equals("OVER_QUERY_LIMIT")) {
+                    // DISPLAY ERROR MESSAGE ON SCREEN in new thread
+
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MapsActivity.this, "Over API query limit! Error 100", Toast.LENGTH_SHORT).show();
+                                    TextView view = (TextView) findViewById(R.id.mapInfoTV);
+                                    view.setText(view.getText().toString() + "\nOver API query limit! Error 100");
+                                }
+                            });
+                        }
+                    }).start(); // end of new Thread
+
+                } // end of if
+
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+        // check if request was invalid
+        private void invalidRequest() {
+
+            try {
+                JSONObject rootJson = new JSONObject(unparsedJSON);
+                String err = rootJson.getString("status");
+                Log.d("Status: ", err);
+
+                if (err.equals("INVALID_REQUEST")) {
+                    // DISPLAY ERROR MESSAGE ON SCREEN in new thread
+
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MapsActivity.this, "Invalid request! Try modifying your search", Toast.LENGTH_SHORT).show();
+                                    TextView view = (TextView) findViewById(R.id.mapInfoTV);
+                                    view.setText(view.getText().toString() + "\nInvalid request! Try modifying your search");
+                                }
+                            });
+                        }
+                    }).start(); // end of new Thread
+
+                } // end of if
+
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+
+
+        // Check if raw json indicates there are zero results
+        private void zeroResults() {
+
+            boolean isZeroResults = false;
+
+            try {
+                JSONObject rootJson = new JSONObject(unparsedJSON);
+                String err = rootJson.getString("status");
+                Log.d("Status: ", err);
+
+                if (err.equals("ZERO_RESULTS")) {
+                    // DISPLAY ERROR MESSAGE ON SCREEN in new thread
+                    isZeroResults = true;
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MapsActivity.this, "Sorry, no results =(", Toast.LENGTH_SHORT).show();
+                                    TextView view = (TextView) findViewById(R.id.mapInfoTV);
+                                    view.setText(view.getText().toString() + "\nSorry, no results found.");
+                                }
+                            });
+                        }
+                    }).start(); // end of new Thread
+
+                } // end of if
+
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+//            return isZeroResults;
+
+        } // end of zeroResults
+
 
         private void getPlaceId() {
 
+            // check if there are zero results from the api call and handle it
+            zeroResults();
+
+            // check if we are over teh query limit
+            overQueryLimit();
+
+            // check if there is an invalid request
+            invalidRequest();
 
             // parse the JSON data and put it in a bundle ready to be passed on to DetailInfoActivity
             // Only get the place_id, the places details will be handled in the DetailsActivity

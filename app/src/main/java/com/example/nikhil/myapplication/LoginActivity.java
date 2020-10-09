@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -57,7 +58,8 @@ public class LoginActivity extends ActionBarActivity {
 
         // style the action bar
         ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00838F")));
+        mActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2196F3")));
+        mActionBar.setTitle("midPoint");
 //        mActionBar.setDisplayShowTitleEnabled(false);
 //        mActionBar.setDisplayShowTitleEnabled(true);
 
@@ -81,37 +83,9 @@ public class LoginActivity extends ActionBarActivity {
 
 
         // Connect to server
-
-//
         try {
-//            mSocket = IO.socket("http://mytest-darthbatman.rhcloud.com");
-////            mSocket = IO.socket("http://chat.socket.io");
-//            mSocket.connect();
 
             connectToServer();
-//
-//            // emit test event TODO get rid of this
-//            mSocket.emit("attempted login", "darthbatman", "password44");
-//
-//            // // STOPSHIP: 9/17/15
-//            // TODO Finalize login process
-//            // TODO THIS IS JUST A TEST
-//            // add a lsitener to check if cheese went through
-//            mSocket.on("login success", new Emitter.Listener() {
-//                @Override
-//                public void call(Object... args) {
-//
-//                    try {
-//                        JSONArray obj = (JSONArray) args[0];
-//                        Log.d("yarfyl", obj.get(0).toString());
-//                        Log.d("yarfyl", obj.get(1).toString());
-//                    }
-//                    catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//            });
 
         }
         catch (URISyntaxException e) {
@@ -191,12 +165,24 @@ public class LoginActivity extends ActionBarActivity {
                     public void call(Object... args) {
 
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(), "Invalid Login", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            final Toast toast = Toast.makeText(getApplicationContext(), "Invalid login", Toast.LENGTH_SHORT);
+                            toast.show();
+
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    toast.cancel();
+                                }
+                            }, 1000);
+
+//                            Toast.makeText(getApplicationContext(), "Invalid Login", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
 
 
